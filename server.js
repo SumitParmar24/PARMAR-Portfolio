@@ -170,8 +170,8 @@ app.post('/add-project', isAuthenticated, uploadProject.single('image'), (req, r
         (err, result) => {
 
             if (err) {
-                console.log(err);
-                return res.send('Error saving project');
+                console.log("PROJECT INSERT ERROR:", err);
+                return res.send(err.message);
             }
 
             console.log('📁 Project added:', title);

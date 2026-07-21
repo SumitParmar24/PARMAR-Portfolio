@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details - PARMAR</title>
+
+```
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f1f5f9;
+        margin: 0;
+        padding: 40px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+    }
+
+    .image img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+    }
+
+    .content {
+        padding: 30px;
+    }
+
+    h1 {
+        margin-bottom: 10px;
+        color: #111827;
+    }
+
+    .tech {
+        display: inline-block;
+        background: #2563eb;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 999px;
+        margin: 10px 0 20px;
+        font-size: 14px;
+    }
+
+    p {
+        line-height: 1.7;
+        color: #374151;
+    }
+
+    .buttons {
+        margin-top: 25px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 12px 18px;
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .github {
+        background: #111827;
+    }
+
+    .demo {
+        background: #2563eb;
+    }
+
+    .back {
+        background: #64748b;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<div class="container">
+
+    <div class="image">
+        <img id="projectImage" src="" alt="Project Image">
+    </div>
+
+    <div class="content">
+
+        <h1 id="projectTitle">Loading...</h1>
+
+        <div class="tech" id="projectTech">Technology</div>
+
+        <p id="projectDesc">Project description will appear here.</p>
+
+        <div class="buttons">
+
+            <a id="githubBtn" href="#" target="_blank" class="btn github">GitHub</a>
+
+            <a id="demoBtn" href="#" target="_blank" class="btn demo">Live Demo</a>
+
+            <a href="/" class="btn back">← Back to Home</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    async function loadProject() {
+
+        const response = await fetch('/api/projects');
+        const projects = await response.json();
+
+        const project = projects.find(p => p.id == id);
+
+        if (!project) {
+            document.body.innerHTML = '<h2 style="text-align:center;margin-top:50px;">Project not found</h2>';
+            return;
+        }
+
+        document.getElementById('projectTitle').textContent = project.title;
+        document.getElementById('projectTech').textContent = project.technology || 'Technology';
+        document.getElementById('projectDesc').textContent = project.description;
+        document.getElementById('projectImage').src = '/uploads/projects/' + project.image;
+
+        document.getElementById('githubBtn').href = project.github || '#';
+        document.getElementById('demoBtn').href = project.demo || '#';
+    }
+
+    loadProject();
+</script>
+```
+
+</body>
+
+</html>

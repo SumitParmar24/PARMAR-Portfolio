@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Report - PARMAR</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
+
+.container{
+    max-width:850px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:30px;
+    color:#111827;
+}
+
+.report-form{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.report-form label{
+    display:block;
+    margin:18px 0 8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.report-form input,
+.report-form textarea,
+.report-form select{
+    width:100%;
+    padding:14px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+}
+
+.report-form input:focus,
+.report-form textarea:focus,
+.report-form select:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 0 4px rgba(56,189,248,.18);
+}
+
+.report-form textarea{
+    resize:vertical;
+}
+
+.actions{
+    margin-top:28px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:14px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.btn-primary{
+    background:#38bdf8;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#0ea5e9;
+}
+
+.btn-secondary{
+    background:#111827;
+    color:white;
+}
+
+.btn-secondary:hover{
+    background:#1f2937;
+}
+
+.preview{
+    margin-top:25px;
+    background:white;
+    border:1px dashed #94a3b8;
+    border-radius:14px;
+    padding:20px;
+}
+
+.preview h3{
+    margin-bottom:10px;
+    color:#111827;
+}
+
+.preview p{
+    color:#475569;
+    line-height:1.7;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Upload Report</h1>
+
+<form class="report-form" id="reportForm">
+
+    <label>Report Title</label>
+    <input type="text" id="reportTitle" placeholder="Sales Analysis Report" required>
+
+    <label>Category</label>
+    <select id="reportCategory" required>
+        <option value="">Select Category</option>
+        <option>Power BI</option>
+        <option>SQL</option>
+        <option>Python</option>
+        <option>Data Analytics</option>
+        <option>Machine Learning</option>
+    </select>
+
+    <label>Description</label>
+    <textarea id="reportDesc" rows="5" placeholder="Write a short report description..." required></textarea>
+
+    <label>Upload PDF Report</label>
+    <input type="file" accept=".pdf" required>
+
+    <label>Report Date</label>
+    <input type="date">
+
+    <div class="actions">
+        <button type="submit" class="btn btn-primary">Upload Report</button>
+        <a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+</form>
+
+<div class="preview">
+    <h3>Preview</h3>
+    <p id="previewText">Report preview will appear here.</p>
+</div>
+```
+
+</div>
+
+<script>
+const reportForm = document.getElementById('reportForm');
+const previewText = document.getElementById('previewText');
+
+reportForm.addEventListener('input', () => {
+
+    const title = document.getElementById('reportTitle').value;
+    const category = document.getElementById('reportCategory').value;
+    const desc = document.getElementById('reportDesc').value;
+
+    previewText.innerHTML = `
+        <strong>${title || 'Report Title'}</strong><br><br>
+        <strong>Category:</strong> ${category || 'Not selected'}<br><br>
+        ${desc || 'Report description will appear here.'}
+    `;
+});
+
+reportForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Report uploaded successfully! Database connection will be added later.');
+    reportForm.reset();
+    previewText.textContent = 'Report preview will appear here.';
+});
+</script>
+
+</body>
+</html>

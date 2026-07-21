@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Certificate - PARMAR</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
+
+.container{
+    max-width:850px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:30px;
+    color:#111827;
+}
+
+.certificate-form{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.certificate-form label{
+    display:block;
+    margin:18px 0 8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.certificate-form input,
+.certificate-form textarea,
+.certificate-form select{
+    width:100%;
+    padding:14px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+}
+
+.certificate-form input:focus,
+.certificate-form textarea:focus,
+.certificate-form select:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 0 4px rgba(56,189,248,.18);
+}
+
+.actions{
+    margin-top:28px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:14px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.btn-primary{
+    background:#38bdf8;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#0ea5e9;
+}
+
+.btn-secondary{
+    background:#111827;
+    color:white;
+}
+
+.preview{
+    margin-top:25px;
+    background:white;
+    border:1px dashed #94a3b8;
+    border-radius:14px;
+    padding:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Upload Certificate</h1>
+
+<form class="certificate-form" id="certificateForm">
+
+    <label>Certificate Title</label>
+    <input type="text" id="certTitle" placeholder="Data Analytics Internship" required>
+
+    <label>Issued By</label>
+    <input type="text" id="certIssuer" placeholder="Elevance Skills Technology" required>
+
+    <label>Category</label>
+    <select id="certCategory" required>
+        <option value="">Select Category</option>
+        <option>Internship</option>
+        <option>Course</option>
+        <option>Workshop</option>
+        <option>Training</option>
+        <option>Hackathon</option>
+    </select>
+
+    <label>Description</label>
+    <textarea id="certDesc" rows="4" placeholder="Short description about the certificate..."></textarea>
+
+    <label>Issue Date</label>
+    <input type="date">
+
+    <label>Upload Certificate</label>
+    <input type="file" accept="image/*,.pdf" required>
+
+    <div class="actions">
+        <button type="submit" class="btn btn-primary">Upload Certificate</button>
+        <a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+</form>
+
+<div class="preview">
+    <h3>Preview</h3>
+    <p id="previewText">Certificate preview will appear here.</p>
+</div>
+```
+
+</div>
+
+<script>
+const certForm = document.getElementById('certificateForm');
+const preview = document.getElementById('previewText');
+
+certForm.addEventListener('input', () => {
+
+    const title = document.getElementById('certTitle').value;
+    const issuer = document.getElementById('certIssuer').value;
+    const category = document.getElementById('certCategory').value;
+    const desc = document.getElementById('certDesc').value;
+
+    preview.innerHTML = `
+        <strong>${title || 'Certificate Title'}</strong><br><br>
+        <strong>Issued By:</strong> ${issuer || 'Issuer'}<br>
+        <strong>Category:</strong> ${category || 'Not selected'}<br><br>
+        ${desc || 'Certificate description will appear here.'}
+    `;
+});
+
+certForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Certificate uploaded successfully! Database connection will be added later.');
+    certForm.reset();
+    preview.textContent = 'Certificate preview will appear here.';
+});
+</script>
+
+</body>
+</html>

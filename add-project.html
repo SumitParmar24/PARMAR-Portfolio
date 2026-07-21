@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Project - PARMAR</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:30px;
+    color:#111827;
+}
+
+.project-form{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.project-form .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.project-form label{
+    display:block;
+    margin-bottom:8px;
+    color:#334155;
+    font-weight:600;
+}
+
+.project-form input,
+.project-form textarea,
+.project-form select{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+}
+
+.project-form input:focus,
+.project-form textarea:focus,
+.project-form select:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 0 4px rgba(56,189,248,.18);
+}
+
+.project-form textarea{
+    resize:vertical;
+}
+
+.actions{
+    margin-top:25px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    text-decoration:none;
+    border:none;
+    padding:14px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-primary{
+    background:#38bdf8;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#0ea5e9;
+}
+
+.btn-secondary{
+    background:#111827;
+    color:white;
+}
+
+.btn-secondary:hover{
+    background:#1f2937;
+}
+
+.preview{
+    margin-top:25px;
+    background:#ffffff;
+    border:1px dashed #94a3b8;
+    border-radius:14px;
+    padding:20px;
+}
+
+.preview h3{
+    margin-bottom:10px;
+    color:#111827;
+}
+
+.preview p{
+    color:#475569;
+    line-height:1.7;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Add New Project</h1>
+
+t>
+const projectForm = document.getElementById('projectForm');
+const previewText = document.getElementById('previewText');
+
+projectForm.addEventListener('input', () => {
+
+    const name = document.getElementById('projectName').value;
+    const tech = document.getElementById('projectTech').value;
+    const desc = document.getElementById('projectDesc').value;
+
+    previewText.innerHTML = `
+        <strong>${name || 'Project Name'}</strong><br><br>
+        <strong>Technology:</strong> ${tech || 'Not selected'}<br><br>
+        ${desc || 'Project description will appear here.'}
+    `;
+});
+
+projectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Project saved successfully! Database connection will be added later.');
+    projectForm.reset();
+    previewText.textContent = 'Project preview will appear here.';
+});
+</script>
+
+</body>
+<form class="project-form" action="/add-project" method="POST" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div>
+            <label>Project Name</label>
+            <input type="text" name="title" placeholder="Library Management System" required>
+        </div>
+
+        <div>
+            <label>Technology</label>
+            <select name="technology" required>
+                <option value="">Select Technology</option>
+                <option>MySQL</option>
+                <option>Power BI</option>
+                <option>Python</option>
+                <option>HTML/CSS/JavaScript</option>
+                <option>Java</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div style="margin-top:20px;">
+        <label>Description</label>
+        <textarea name="description" rows="5" placeholder="Write project description..." required></textarea>
+    </div>
+
+    <div class="row" style="margin-top:20px;">
+
+        <div>
+            <label>GitHub Link</label>
+            <input type="url" name="github" placeholder="https://github.com/username/project">
+        </div>
+
+        <div>
+            <label>Live Demo Link</label>
+            <input type="url" name="demo" placeholder="https://yourproject.com">
+        </div>
+
+    </div>
+
+    <div style="margin-top:20px;">
+        <label>Project Image</label>
+        <input type="file" name="image" accept="image/*" required>
+    </div>
+
+    <div class="actions">
+        <button type="submit" class="btn btn-primary">Save Project</button>
+        <a href="dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+</form>
+
+<div class="preview">
+    <h3>Preview</h3>
+    <p id="previewText">Project preview will appear here.</p>
+</div>
+```
+
+</div>
+
+</html>

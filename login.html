@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PARMAR</title>
+
+```
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+    }
+
+    .login-box{
+        width:380px;
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(255,255,255,.15);
+        backdrop-filter:blur(12px);
+        padding:40px;
+        border-radius:20px;
+        box-shadow:0 15px 35px rgba(0,0,0,.35);
+        color:white;
+    }
+
+    .login-box h1{
+        text-align:center;
+        margin-bottom:10px;
+        color:#38bdf8;
+    }
+
+    .login-box p{
+        text-align:center;
+        color:#cbd5e1;
+        margin-bottom:30px;
+    }
+
+    .input-box{
+        margin-bottom:20px;
+    }
+
+    .input-box label{
+        display:block;
+        margin-bottom:8px;
+        font-size:14px;
+        color:#e2e8f0;
+    }
+
+    .input-box input{
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        outline:none;
+        font-size:16px;
+        background:rgba(255,255,255,.12);
+        color:white;
+    }
+
+    .input-box input::placeholder{
+        color:#cbd5e1;
+    }
+
+    .login-btn{
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:10px;
+        background:#38bdf8;
+        color:white;
+        font-size:16px;
+        font-weight:bold;
+        cursor:pointer;
+        transition:.3s;
+    }
+
+    .login-btn:hover{
+        background:#0ea5e9;
+        transform:translateY(-2px);
+    }
+
+    .back-link{
+        text-align:center;
+        margin-top:20px;
+    }
+
+    .back-link a{
+        color:#38bdf8;
+        text-decoration:none;
+    }
+
+    .back-link a:hover{
+        text-decoration:underline;
+    }
+</style>
+```
+
+</head>
+<body>
+
+```
+<div class="login-box">
+
+    <h1>PARMAR</h1>
+
+    <p>Admin Login</p>
+
+<form action="/login" method="POST">
+
+    <div class="input-box">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="admin@parmar.com" required>
+    </div>
+
+    <div class="input-box">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter password" required>
+    </div>
+
+    <button type="submit" class="login-btn">Login</button>
+
+</form>
+
+    <div class="back-link">
+        <a href="index.html">← Back to Website</a>
+    </div>
+
+</div>
+
+```
+
+</body>
+</html>

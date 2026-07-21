@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Skills - PARMAR</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:30px;
+    color:#111827;
+}
+
+.skill-form{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+.skill-form input,
+.skill-form select{
+    width:100%;
+    padding:14px;
+    margin:12px 0;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.skill-form button{
+    background:#38bdf8;
+    color:white;
+    border:none;
+    padding:14px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.skill-form button:hover{
+    background:#0ea5e9;
+}
+
+.skills-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.skills-table th,
+.skills-table td{
+    padding:16px;
+    text-align:left;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.skills-table th{
+    background:#111827;
+    color:white;
+}
+
+.edit-btn,
+.delete-btn{
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    color:white;
+}
+
+.edit-btn{
+    background:#f59e0b;
+}
+
+.delete-btn{
+    background:#ef4444;
+}
+
+.back{
+    display:inline-block;
+    margin-top:25px;
+    text-decoration:none;
+    background:#111827;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Manage Skills</h1>
+
+<div class="skill-form">
+
+    <input type="text" placeholder="Skill Name">
+
+    <select>
+        <option>Select Level</option>
+        <option>Beginner</option>
+        <option>Intermediate</option>
+        <option>Advanced</option>
+    </select>
+
+    <button>Add Skill</button>
+
+</div>
+
+<table class="skills-table">
+
+    <tr>
+        <th>Skill</th>
+        <th>Level</th>
+        <th>Actions</th>
+    </tr>
+
+    <tr>
+        <td>SQL</td>
+        <td>Advanced</td>
+        <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Python</td>
+        <td>Intermediate</td>
+        <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Power BI</td>
+        <td>Intermediate</td>
+        <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </td>
+    </tr>
+
+</table>
+
+<a href="dashboard.html" class="back">← Back to Dashboard</a>
+```
+
+</div>
+
+</body>
+</html>

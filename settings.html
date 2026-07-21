@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - PARMAR</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:30px;
+    color:#111827;
+}
+
+.settings-box{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.settings-box h2{
+    margin:25px 0 15px;
+    color:#0f172a;
+}
+
+.settings-box label{
+    display:block;
+    margin:14px 0 8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.settings-box input,
+.settings-box textarea,
+.settings-box select{
+    width:100%;
+    padding:14px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+    transition:.3s;
+}
+
+.settings-box input:focus,
+.settings-box textarea:focus,
+.settings-box select:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 0 4px rgba(56,189,248,.18);
+}
+
+.settings-box textarea{
+    resize:vertical;
+}
+
+.actions{
+    margin-top:30px;
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:14px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.save{
+    background:#16a34a;
+    color:white;
+}
+
+.save:hover{
+    background:#15803d;
+}
+
+.back{
+    background:#111827;
+    color:white;
+}
+
+.back:hover{
+    background:#1f2937;
+}
+
+.note{
+    margin-top:18px;
+    padding:14px;
+    border-radius:10px;
+    background:#e0f2fe;
+    color:#0c4a6e;
+    font-size:14px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Website Settings</h1>
+
+<form class="settings-box" id="settingsForm">
+
+    <h2>General</h2>
+
+    <label>Website Title</label>
+    <input type="text" value="PARMAR">
+
+    <label>Tagline</label>
+    <input type="text" value="Data Analyst | Web Developer | Freelancer">
+
+    <label>About Text</label>
+    <textarea rows="5">I am Sumit Parmar, a BCA student and aspiring Data Analyst skilled in SQL, Power BI, Python, and web development.</textarea>
+
+    <h2>Contact</h2>
+
+    <label>Email</label>
+    <input type="email" value="sumit@example.com">
+
+    <label>Phone</label>
+    <input type="tel" value="+91 9876543210">
+
+    <label>Location</label>
+    <input type="text" value="Indore, Madhya Pradesh, India">
+
+    <h2>Appearance</h2>
+
+    <label>Default Theme</label>
+    <select>
+        <option>Light</option>
+        <option>Dark</option>
+        <option>System Default</option>
+    </select>
+
+    <label>Primary Color</label>
+    <input type="color" value="#38bdf8">
+
+    <div class="note">
+        Changes are currently saved only in the browser preview. Database integration will be added later.
+    </div>
+
+    <div class="actions">
+        <button type="submit" class="btn save">Save Settings</button>
+        <a href="dashboard.html" class="btn back">← Back to Dashboard</a>
+    </div>
+
+</form>
+```
+
+</div>
+
+<script>
+document.getElementById('settingsForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    alert('Settings saved successfully! Database connection will be added later.');
+});
+</script>
+
+</body>
+</html>
+

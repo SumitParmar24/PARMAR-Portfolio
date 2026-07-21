@@ -110,8 +110,10 @@ app.post('/login', (req, res) => {
 
     db.query(sql, [email], async (err, results) => {
 
+
         if (err) {
-            return res.send('Database Error');
+            console.log("LOGIN DATABASE ERROR:", err);
+            return res.send(err.message);
         }
 
         if (results.length === 0) {

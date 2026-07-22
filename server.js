@@ -393,6 +393,102 @@ app.post('/upload-resume', isAuthenticated, upload.single('resume'), (req, res) 
 
 });
 
+// =========================
+// Skills API
+// =========================
+
+// Get all skills
+app.get('/api/skills', (req, res) => {
+
+    const sql = 'SELECT * FROM skills ORDER BY id DESC';
+
+    db.query(sql, (err, results) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: 'Database Error' });
+        }
+
+        res.json(results);
+
+    });
+
+});
+
+// Add new skill
+app.post('/add-skill', isAuthenticated, (req, res) => {
+
+    const { title, description } = req.body;
+
+    const sql = `
+        INSERT INTO skills (title, description)
+        VALUES (?, ?)
+    `;
+
+    db.query(sql, [title, description], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error adding skill');
+        }
+
+        console.log('➕ New Skill Added:', title);
+
+        res.send('Skill added successfully');
+
+    });
+
+});
+
+// Update skill
+app.put('/update-skill/:id', isAuthenticated, (req, res) => {
+
+    const skillId = req.params.id;
+    const { title, description } = req.body;
+
+    const sql = `
+        UPDATE skills
+        SET title = ?, description = ?
+        WHERE id = ?
+    `;
+
+    db.query(sql, [title, description, skillId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error updating skill');
+        }
+
+        console.log('✏️ Skill updated:', skillId);
+
+        res.send('Skill updated successfully');
+
+    });
+
+});
+
+// Delete skill
+app.delete('/delete-skill/:id', isAuthenticated, (req, res) => {
+
+    const skillId = req.params.id;
+
+    const sql = 'DELETE FROM skills WHERE id = ?';
+
+    db.query(sql, [skillId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error deleting skill');
+        }
+
+        console.log('🗑️ Skill deleted:', skillId);
+
+        res.send('Skill deleted successfully');
+
+    });
+
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);

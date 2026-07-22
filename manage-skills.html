@@ -120,55 +120,31 @@ h1{
 ```
 <h1>Manage Skills</h1>
 
-<div class="skill-form">
+<form id="skillForm" class="skill-form">
 
-    <input type="text" placeholder="Skill Name">
+    <input type="text" id="skillTitle" placeholder="Skill Name" required>
 
-    <select>
-        <option>Select Level</option>
-        <option>Beginner</option>
-        <option>Intermediate</option>
-        <option>Advanced</option>
-    </select>
+    <input type="text" id="skillDescription" placeholder="Skill Description" required>
 
-    <button>Add Skill</button>
+    <button type="submit">Add Skill</button>
 
-</div>
+</form>
 
 <table class="skills-table">
 
-    <tr>
-        <th>Skill</th>
-        <th>Level</th>
-        <th>Actions</th>
-    </tr>
+    <thead>
+        <tr>
+            <th>Skill</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
 
-    <tr>
-        <td>SQL</td>
-        <td>Advanced</td>
-        <td>
-            <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
-        </td>
-    </tr>
-
-    <tr>
-        <td>Python</td>
-        <td>Intermediate</td>
-        <td>
-            <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
-        </td>
-    </tr>
-
-    <tr>
-        <td>Power BI</td>
-        <td>Intermediate</td>
-        <td>
-            <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
-        </td>
-    </tr>
+    <tbody id="skillsTable">
+        <tr>
+            <td colspan="3">Loading skills...</td>
+        </tr>
+    </tbody>
 
 </table>
 
@@ -176,6 +152,100 @@ h1{
 ```
 
 </div>
+
+<script>
+async function loadSkills(){
+
+    const tbody = document.getElementById('skillsTable');
+
+    const response = await fetch('/api/skills');
+    const skills = await response.json();
+
+    tbody.innerHTML = '';
+
+    skills.forEach(skill => {
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${skill.title}</td>
+                <td>${skill.description}</td>
+                <td>
+                    <button class="edit-btn"
+                        onclick="editSkill(${skill.id}, '${skill.title}', '${skill.description}')">
+                        Edit
+                    </button>
+
+                    <button class="delete-btn"
+                        onclick="deleteSkill(${skill.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+
+    });
+
+}
+
+document.getElementById('skillForm').addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    const title = document.getElementById('skillTitle').value;
+    const description = document.getElementById('skillDescription').value;
+
+    const response = await fetch('/add-skill', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body:JSON.stringify({
+            title:title,
+            description:description
+        })
+    });
+
+    const result = await response.text();
+
+    alert(result);
+
+    document.getElementById('skillForm').reset();
+
+    loadSkills();
+
+});
+
+async function editSkill(id, oldTitle, oldDescription){
+
+    const newTitle = prompt('Edit skill title:', oldTitle);
+    if(newTitle === null) return;
+
+    const newDescription = prompt('Edit skill description:', oldDescription);
+    if(newDescription === null) return;
+
+    await fetch(`/update-skill/${id}`, {
+        method:'PUT',
+        headers:{ 'Content-Type':'application/json' },
+        body:JSON.stringify({
+            title:newTitle,
+            description:newDescription
+        })
+    });
+
+    loadSkills();
+}
+
+async function deleteSkill(id){
+
+    if(!confirm('Delete this skill?')) return;
+
+    await fetch(`/delete-skill/${id}`, {
+        method:'DELETE'
+    });
+
+    loadSkills();
+}
+
+loadSkills();
+</script>
 
 </body>
 </html>

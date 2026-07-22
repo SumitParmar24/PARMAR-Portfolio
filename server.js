@@ -259,6 +259,8 @@ app.delete('/delete-project/:id', isAuthenticated, (req, res) => {
 // Contact Form
 app.post('/contact', (req, res) => {
 
+    console.log('📨 Contact request body:', req.body);
+
     const { name, email, subject, message } = req.body;
 
     const sql = `
@@ -269,7 +271,7 @@ app.post('/contact', (req, res) => {
     db.query(sql, [name, email, subject, message], (err, result) => {
 
         if (err) {
-            console.log(err);
+            console.error('❌ Contact insert error:', err);
             return res.send('Error sending message');
         }
 

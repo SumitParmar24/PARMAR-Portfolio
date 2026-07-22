@@ -437,6 +437,10 @@ window.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const formData = new FormData(contactForm);
+        console.log("NAME CHECK:", formData.get('name'));
+        console.log("EMAIL CHECK:", formData.get('email'));
+        console.log("SUBJECT CHECK:", formData.get('subject'));
+        console.log("MESSAGE CHECK:", formData.get('message'));
 
         const data = {
             name: formData.get('name'),

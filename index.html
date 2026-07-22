@@ -429,43 +429,40 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log('FORM FOUND:', contactForm);
 
     if (!contactForm) {
-        alert('Contact form not found');
         return;
     }
 
     contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        console.log('FORM SUBMITTED');
+        e.preventDefault();
 
         const formData = new FormData(contactForm);
 
-        try {
-            const response = await fetch('/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                name: formData.get('name'),
-                email: formData.get('email'),
-                subject: formData.get('subject'),
-                message: formData.get('message')
-                })
-            });
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            subject: formData.get('subject'),
+            message: formData.get('message')
+        };
 
-            const result = await response.text();
+        console.log("Sending Data:", data);
 
-            console.log('SERVER RESPONSE:', result);
+        const response = await fetch('/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-            alert(result);
+        const result = await response.text();
 
-            contactForm.reset();
+        console.log("SERVER RESPONSE:", result);
 
-        } catch (error) {
-            console.error(error);
-            alert('Network error');
-        }
+        alert(result);
+
+        contactForm.reset();
+
     });
 
 });

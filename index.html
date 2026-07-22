@@ -422,28 +422,47 @@ loadProjects();
 </script>
 
 <script>
-const contactForm = document.getElementById('contactForm');
+window.addEventListener('DOMContentLoaded', () => {
 
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    const contactForm = document.getElementById('contactForm');
 
-    const formData = new FormData(contactForm);
+    console.log('FORM FOUND:', contactForm);
 
-    const response = await fetch('/contact', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams(formData)
+    if (!contactForm) {
+        alert('Contact form not found');
+        return;
+    }
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        console.log('FORM SUBMITTED');
+
+        const formData = new FormData(contactForm);
+
+        try {
+            const response = await fetch('/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(formData)
+            });
+
+            const result = await response.text();
+
+            console.log('SERVER RESPONSE:', result);
+
+            alert(result);
+
+            contactForm.reset();
+
+        } catch (error) {
+            console.error(error);
+            alert('Network error');
+        }
     });
 
-    const result = await response.text();
-
-    alert(result.includes('successfully')
-        ? 'Message sent successfully!'
-        : 'Error sending message');
-
-    contactForm.reset();
 });
 </script>
 

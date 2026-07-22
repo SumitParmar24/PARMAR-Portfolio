@@ -368,7 +368,7 @@ async function loadProjects() {
         const response = await fetch('/api/projects');
         const projects = await response.json();
 
-        if (projects.length === 0) {
+        if (!Array.isArray(projects) || projects.length === 0) {
 
             container.innerHTML = '<p>No projects found.</p>';
             return;

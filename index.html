@@ -448,8 +448,8 @@ window.addEventListener('DOMContentLoaded', () => {
             subject: formData.get('subject'),
             message: formData.get('message')
         };
-
-        console.log("Sending Data:", data);
+        
+        console.log("Sending Data:", JSON.stringify(data));
 
         const response = await fetch('/contact', {
             method: 'POST',

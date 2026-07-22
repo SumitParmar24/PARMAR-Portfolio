@@ -436,20 +436,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
         e.preventDefault();
 
-        const formData = new FormData(contactForm);
-        console.log("NAME CHECK:", formData.get('name'));
-        console.log("EMAIL CHECK:", formData.get('email'));
-        console.log("SUBJECT CHECK:", formData.get('subject'));
-        console.log("MESSAGE CHECK:", formData.get('message'));
-
         const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            subject: formData.get('subject'),
-            message: formData.get('message')
-        };
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    subject: document.getElementById("subject").value,
+    message: document.getElementById("message").value
+};
 
-        console.log("Sending Data:", JSON.stringify(data));
+    console.log("Sending Data:", JSON.stringify(data));
+
+        
 
         const response = await fetch('/contact', {
             method: 'POST',

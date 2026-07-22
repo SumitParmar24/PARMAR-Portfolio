@@ -436,34 +436,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
         e.preventDefault();
 
-    console.log("BEFORE SEND:");
-    console.log("NAME:", document.getElementById("name").value);
-    console.log("EMAIL:", document.getElementById("email").value);
-    console.log("SUBJECT:", document.getElementById("subject").value);
-    console.log("MESSAGE:", document.getElementById("message").value);
-
-
-    console.log("NAME ELEMENT:", document.getElementById("name"));
-    console.log("CURRENT NAME VALUE:", document.getElementById("name").value);
     
-    console.log("INPUT CHECK");
-    console.log(document.querySelector("#name").value);
-    console.log(document.querySelector("#email").value);
-    console.log(document.querySelector("#subject").value);
-    console.log(document.querySelector("#message").value);
 
     const data = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    subject: document.getElementById("subject").value,
-    message: document.getElementById("message").value
-};
+    name: contactForm.elements["name"].value,
+    email: contactForm.elements["email"].value,
+    subject: contactForm.elements["subject"].value,
+    message: contactForm.elements["message"].value
+    };
 
-    alert(document.getElementById("name").value);
 
     console.log("Sending Data:", JSON.stringify(data));
 
-        
+    
 
         const response = await fetch('/contact', {
             method: 'POST',

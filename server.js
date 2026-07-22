@@ -9,6 +9,7 @@ const app = express();
 const PORT = 3000;
 
 // Form data read karne ke liye
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({

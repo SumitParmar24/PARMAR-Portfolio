@@ -189,28 +189,8 @@ PARMAR
         Professional reports and documentation of my projects.
     </p>
 
-    <div class="report-container">
-
-        <div class="report-card">
-
-            <h3>Library Management System</h3>
-
-            <p>Complete SQL project documentation with database design.</p>
-
-            <a href="#">View Report</a>
-
-        </div>
-
-        <div class="report-card">
-
-            <h3>Power BI Dashboard</h3>
-
-            <p>Interactive dashboard report with KPIs and visualizations.</p>
-
-            <a href="#">View Report</a>
-
-        </div>
-
+    <div class="report-container" id="reportsContainer">
+        <p>Loading reports...</p>
     </div>
 
 </section>
@@ -442,6 +422,51 @@ async function loadSkills(){
 }
 
 loadSkills();
+
+// Load reports from database
+async function loadReports(){
+
+    const container = document.getElementById('reportsContainer');
+
+    try {
+
+        const response = await fetch('/api/reports');
+        const reports = await response.json();
+
+        container.innerHTML = '';
+
+        if(reports.length === 0){
+            container.innerHTML = '<p>No reports found.</p>';
+            return;
+        }
+
+        reports.forEach(report => {
+
+            container.innerHTML += `
+                <div class="report-card">
+                    <h3>${report.title}</h3>
+                    <p>${report.description}</p>
+
+                    <a href="/uploads/reports/${report.file}"
+                       target="_blank">
+                       View Report
+                    </a>
+                </div>
+            `;
+
+        });
+
+    } catch(error){
+
+        console.log(error);
+
+        container.innerHTML = '<p>Error loading reports.</p>';
+
+    }
+
+}
+
+loadReports();
 
 </script>
 

@@ -75,10 +75,10 @@ h1{
 
 .btn{
     border:none;
-    padding:14px 22px;
-    border-radius:10px;
+    padding:12px 18px;
+    border-radius:8px;
     cursor:pointer;
-    font-size:16px;
+    font-size:15px;
     font-weight:600;
     text-decoration:none;
     transition:.3s;
@@ -102,6 +102,15 @@ h1{
     background:#1f2937;
 }
 
+.btn-danger{
+    background:#ef4444;
+    color:white;
+}
+
+.btn-danger:hover{
+    background:#dc2626;
+}
+
 .preview{
     margin-top:25px;
     background:white;
@@ -119,6 +128,31 @@ h1{
     color:#475569;
     line-height:1.7;
 }
+
+.report-item{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:18px;
+    margin-top:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+
+.report-item h3{
+    color:#111827;
+    margin-bottom:8px;
+}
+
+.report-item p{
+    color:#475569;
+    margin-bottom:15px;
+}
+
+.report-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
 </style>
 
 </head>
@@ -130,13 +164,17 @@ h1{
 ```
 <h1>Upload Report</h1>
 
-<form class="report-form" id="reportForm" action="/upload-report" method="POST" enctype="multipart/form-data">
+<form class="report-form" id="reportForm"
+      action="/upload-report"
+      method="POST"
+      enctype="multipart/form-data">
 
     <label>Report Title</label>
-    <input type="text" id="reportTitle" name="title" placeholder="Sales Analysis Report" required>
+    <input type="text" id="reportTitle" name="title"
+           placeholder="Sales Analysis Report" required>
 
     <label>Category</label>
-    <select id="reportCategory" required>
+    <select id="reportCategory">
         <option value="">Select Category</option>
         <option>Power BI</option>
         <option>SQL</option>
@@ -146,7 +184,8 @@ h1{
     </select>
 
     <label>Description</label>
-    <textarea id="reportDesc" name="description" rows="5" placeholder="Write a short report description..." required></textarea>
+    <textarea id="reportDesc" name="description" rows="5"
+              placeholder="Write a short report description..." required></textarea>
 
     <label>Upload PDF Report</label>
     <input type="file" name="report" accept=".pdf" required>
@@ -165,14 +204,23 @@ h1{
     <h3>Preview</h3>
     <p id="previewText">Report preview will appear here.</p>
 </div>
+
+<div class="preview">
+    <h3>Uploaded Reports</h3>
+    <div id="reportsTable">
+        <p>Loading reports...</p>
+    </div>
+</div>
 ```
 
 </div>
 
 <script>
+
 const reportForm = document.getElementById('reportForm');
 const previewText = document.getElementById('previewText');
 
+// Live preview
 reportForm.addEventListener('input', () => {
 
     const title = document.getElementById('reportTitle').value;
@@ -185,6 +233,116 @@ reportForm.addEventListener('input', () => {
         ${desc || 'Report description will appear here.'}
     `;
 });
+
+// Load reports from database
+async function loadReports(){
+
+    const container = document.getElementById('reportsTable');
+
+    try {
+
+        const response = await fetch('/api/reports');
+        const reports = await response.json();
+
+        container.innerHTML = '';
+
+        if(reports.length === 0){
+            container.innerHTML = '<p>No reports uploaded yet.</p>';
+            return;
+        }
+
+        reports.forEach(report => {
+
+            container.innerHTML += `
+                <div class="report-item">
+
+                    <h3>${report.title}</h3>
+
+                    <p>${report.description}</p>
+
+                    <div class="report-actions">
+
+                        <a href="/uploads/reports/${report.file}"
+                           target="_blank"
+                           class="btn btn-primary">
+                           View PDF
+                        </a>
+
+                        <button class="btn btn-secondary"
+                            onclick="editReport(${report.id}, '${report.title}', '${report.description}')">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-danger"
+                            onclick="deleteReport(${report.id})">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+    } catch(error){
+
+        console.log(error);
+        container.innerHTML = '<p>Error loading reports.</p>';
+
+    }
+
+}
+
+// Edit report
+async function editReport(id, oldTitle, oldDescription){
+
+    const newTitle = prompt('Edit report title:', oldTitle);
+    if(newTitle === null) return;
+
+    const newDescription = prompt('Edit report description:', oldDescription);
+    if(newDescription === null) return;
+
+    const response = await fetch(`/update-report/${id}`, {
+        method:'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            title:newTitle,
+            description:newDescription
+        })
+    });
+
+    const result = await response.text();
+
+    alert(result);
+
+    loadReports();
+
+}
+
+// Delete report
+async function deleteReport(id){
+
+    if(!confirm('Delete this report?')){
+        return;
+    }
+
+    const response = await fetch(`/delete-report/${id}`, {
+        method:'DELETE'
+    });
+
+    const result = await response.text();
+
+    alert(result);
+
+    loadReports();
+
+}
+
+// Initial load
+loadReports();
 
 </script>
 

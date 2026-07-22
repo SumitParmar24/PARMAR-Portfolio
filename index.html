@@ -295,6 +295,10 @@ PARMAR
 
     <button type="submit">Send Message</button>
 
+    <div id="successMessage" style="display:none; color:#16a34a; margin-top:15px; font-weight:600; text-align:center;">
+    ✅ Message sent successfully!
+    </div>
+
     </form>
 
 
@@ -462,7 +466,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         console.log("SERVER RESPONSE:", result);
 
-        alert("Message sent successfully!");
+        document.getElementById("successMessage").style.display = "block";
 
         contactForm.reset();
 

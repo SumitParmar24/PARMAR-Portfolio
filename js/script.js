@@ -58,17 +58,6 @@ sections.forEach((section) => {
 
 });
 
-const contactForm = document.querySelector(".contact-form");
-
-contactForm.addEventListener("submit", function(e){
-
-    e.preventDefault();
-
-    alert("Thank you! Your message has been received.");
-
-    contactForm.reset();
-
-});
 
 const themeToggle = document.getElementById("theme-toggle");
 

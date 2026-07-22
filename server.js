@@ -272,6 +272,7 @@ app.delete('/delete-project/:id', isAuthenticated, (req, res) => {
 // Contact Form
 app.post('/contact', (req, res) => {
 
+    
     console.log('📨 Contact request body:', req.body);
 
     const { name, email, subject, message } = req.body;

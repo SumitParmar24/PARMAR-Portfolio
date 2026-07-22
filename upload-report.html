@@ -130,10 +130,10 @@ h1{
 ```
 <h1>Upload Report</h1>
 
-<form class="report-form" id="reportForm">
+<form class="report-form" id="reportForm" action="/upload-report" method="POST" enctype="multipart/form-data">
 
     <label>Report Title</label>
-    <input type="text" id="reportTitle" placeholder="Sales Analysis Report" required>
+    <input type="text" id="reportTitle" name="title" placeholder="Sales Analysis Report" required>
 
     <label>Category</label>
     <select id="reportCategory" required>
@@ -146,10 +146,10 @@ h1{
     </select>
 
     <label>Description</label>
-    <textarea id="reportDesc" rows="5" placeholder="Write a short report description..." required></textarea>
+    <textarea id="reportDesc" name="description" rows="5" placeholder="Write a short report description..." required></textarea>
 
     <label>Upload PDF Report</label>
-    <input type="file" accept=".pdf" required>
+    <input type="file" name="report" accept=".pdf" required>
 
     <label>Report Date</label>
     <input type="date">
@@ -186,12 +186,6 @@ reportForm.addEventListener('input', () => {
     `;
 });
 
-reportForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Report uploaded successfully! Database connection will be added later.');
-    reportForm.reset();
-    previewText.textContent = 'Report preview will appear here.';
-});
 </script>
 
 </body>

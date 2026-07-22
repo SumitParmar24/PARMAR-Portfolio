@@ -44,6 +44,19 @@ const projectStorage = multer.diskStorage({
     }
 });
 
+
+// Report PDF storage
+const reportStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/reports/');
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now() + '-' + file.originalname;
+        cb(null, uniqueName);
+    }
+});
+
+const uploadReport = multer({ storage: reportStorage });
 const uploadProject = multer({ storage: projectStorage });
 
 // Uploads folder public
@@ -373,6 +386,52 @@ app.get('/api/stats', isAuthenticated, (req, res) => {
         });
 
     });
+
+});
+
+// Upload Report
+app.post('/upload-report', isAuthenticated, uploadReport.single('report'), (req, res) => {
+
+    const { title, description } = req.body;
+
+    const file = req.file ? req.file.filename : null;
+
+    const sql = `
+        INSERT INTO reports (title, description, file)
+        VALUES (?, ?, ?)
+    `;
+
+    db.query(sql, [title, description, file], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.send('Error uploading report');
+        }
+
+        console.log('📄 Report uploaded:', title);
+
+        res.send('Report uploaded successfully');
+
+    });
+
+});
+
+// Get all reports
+app.get('/api/reports', (req, res) => {
+
+    db.query(
+        'SELECT * FROM reports ORDER BY created_at DESC',
+        (err, results) => {
+
+            if (err) {
+                console.log(err);
+                return res.status(500).json([]);
+            }
+
+            res.json(results);
+
+        }
+    );
 
 });
 

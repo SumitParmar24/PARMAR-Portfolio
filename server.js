@@ -435,6 +435,55 @@ app.get('/api/reports', (req, res) => {
 
 });
 
+// Update report
+app.put('/update-report/:id', isAuthenticated, (req, res) => {
+
+    const reportId = req.params.id;
+    const { title, description } = req.body;
+
+    const sql = `
+        UPDATE reports
+        SET title = ?, description = ?
+        WHERE id = ?
+    `;
+
+    db.query(sql, [title, description, reportId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error updating report');
+        }
+
+        console.log('✏️ Report updated:', reportId);
+
+        res.send('Report updated successfully');
+
+    });
+
+});
+
+// Delete report
+app.delete('/delete-report/:id', isAuthenticated, (req, res) => {
+
+    const reportId = req.params.id;
+
+    const sql = 'DELETE FROM reports WHERE id = ?';
+
+    db.query(sql, [reportId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error deleting report');
+        }
+
+        console.log('🗑️ Report deleted:', reportId);
+
+        res.send('Report deleted successfully');
+
+    });
+
+});
+
 // Upload Resume
 app.post('/upload-resume', isAuthenticated, upload.single('resume'), (req, res) => {
 

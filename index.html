@@ -128,28 +128,8 @@ PARMAR
 
     <h2>My Skills</h2>
 
-    <div class="skill-container">
-
-        <div class="skill-card">
-            <h3>SQL</h3>
-            <p>Database Design, Queries, Joins, Functions</p>
-        </div>
-
-        <div class="skill-card">
-            <h3>Power BI</h3>
-            <p>Dashboards, DAX, Power Query</p>
-        </div>
-
-        <div class="skill-card">
-            <h3>Python</h3>
-            <p>Automation, Data Analysis, Basics</p>
-        </div>
-
-        <div class="skill-card">
-            <h3>HTML & CSS</h3>
-            <p>Responsive Website Development</p>
-        </div>
-
+    <div class="skill-container" id="skillsContainer">
+        <p>Loading skills...</p>
     </div>
 
 </section>
@@ -422,6 +402,46 @@ async function loadProjects() {
 
 // Load projects when page opens
 loadProjects();
+
+// Load skills from database
+async function loadSkills(){
+
+    const container = document.getElementById('skillsContainer');
+
+    try {
+
+        const response = await fetch('/api/skills');
+        const skills = await response.json();
+
+        container.innerHTML = '';
+
+        if(skills.length === 0){
+            container.innerHTML = '<p>No skills found.</p>';
+            return;
+        }
+
+        skills.forEach(skill => {
+
+            container.innerHTML += `
+                <div class="skill-card">
+                    <h3>${skill.title}</h3>
+                    <p>${skill.description}</p>
+                </div>
+            `;
+
+        });
+
+    } catch(error){
+
+        console.log(error);
+
+        container.innerHTML = '<p>Error loading skills.</p>';
+
+    }
+
+}
+
+loadSkills();
 
 </script>
 

@@ -33,8 +33,16 @@ const storage = multer.diskStorage({
 
         // Certificate upload
         else if (req.originalUrl.includes('certificate')) {
-            cb(null, 'uploads/certificates');
-        }
+
+    const fs = require('fs');
+
+    // Folder nahi hai to bana do
+    if (!fs.existsSync('uploads/certificates')) {
+        fs.mkdirSync('uploads/certificates', { recursive: true });
+    }
+
+    cb(null, 'uploads/certificates');
+}
 
         // Project upload
         else {

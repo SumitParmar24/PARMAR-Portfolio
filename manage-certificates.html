@@ -107,33 +107,40 @@ async function loadCertificates(){
 
         certificates.forEach(cert => {
 
-            grid.innerHTML += `
-                <div class="card">
+    grid.innerHTML += `
+        <div class="card">
 
-                    <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
+            <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
 
-                    <h3>${cert.title}</h3>
+            <h3>${cert.title}</h3>
 
-                    <p><strong>Issuer:</strong> ${cert.issuer || ''}</p>
+            <p><strong>Issuer:</strong> ${cert.issuer || ''}</p>
 
-                    <div class="actions">
+            <div class="actions">
 
-                        <button class="btn btn-edit"
-                            onclick="editCertificate(${cert.id}, '${cert.title}', '${cert.issuer}')">
-                            Edit
-                        </button>
+                <a href="/uploads/certificates/${cert.image}"
+                   target="_blank"
+                   class="btn btn-edit"
+                   style="text-decoration:none; display:inline-block;">
+                   View
+                </a>
 
-                        <button class="btn btn-delete"
-                            onclick="deleteCertificate(${cert.id})">
-                            Delete
-                        </button>
+                <button class="btn btn-edit"
+                    onclick="editCertificate(${cert.id}, '${cert.title}', '${cert.issuer}')">
+                    Edit
+                </button>
 
-                    </div>
+                <button class="btn btn-delete"
+                    onclick="deleteCertificate(${cert.id})">
+                    Delete
+                </button>
 
-                </div>
-            `;
+            </div>
 
-        });
+        </div>
+    `;
+
+});
 
     }catch(err){
 

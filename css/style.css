@@ -1109,3 +1109,145 @@ body.dark a{
         margin-top:12px;
     }
 }
+
+/* ===== FINAL MOBILE FIX ===== */
+@media screen and (max-width: 768px){
+
+  body{
+    overflow-x: hidden;
+  }
+
+  .hero{
+    flex-direction: column;
+    text-align: center;
+    padding: 110px 18px 50px;
+    gap: 25px;
+  }
+
+  .hero-text{
+    width: 100%;
+  }
+
+  .hero-text h1{
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+
+  .hero-text h2{
+    font-size: 1.25rem;
+  }
+
+  .hero-text p{
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 100%;
+  }
+
+  .hero-image{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-image img{
+    width: 220px !important;
+    height: 220px !important;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .buttons,
+  .social-links{
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Skills: ek line me sirf 1 card */
+  .skill-container{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px;
+  }
+
+  .skill-card{
+    width: 100% !important;
+    min-height: auto;
+    padding: 20px;
+  }
+
+  /* Projects */
+  .project-container{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px;
+  }
+
+  .project-card{
+    width: 100% !important;
+    padding: 18px;
+  }
+
+  .project-card img{
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .project-buttons{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+  }
+
+  .project-buttons a,
+  .project-buttons .btn{
+    width: 100% !important;
+    text-align: center;
+  }
+
+  /* Reports */
+  .report-container{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px;
+  }
+
+  .report-card{
+    width: 100% !important;
+  }
+
+  /* Certificates */
+  .certificates-grid{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px;
+  }
+
+  .certificate-card{
+    width: 100% !important;
+    padding: 18px;
+  }
+
+  .certificate-card img{
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .certificate-card .btn{
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Contact */
+  .contact-container{
+    flex-direction: column;
+  }
+
+  .contact-form{
+    width: 100%;
+  }
+}

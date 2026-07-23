@@ -112,13 +112,13 @@ h1{
 ```
 <h1>Upload Certificate</h1>
 
-<form class="certificate-form" id="certificateForm">
+<form class="certificate-form" id="certificateForm" action="/add-certificate" method="POST" enctype="multipart/form-data">
 
     <label>Certificate Title</label>
-    <input type="text" id="certTitle" placeholder="Data Analytics Internship" required>
+    <input type="text" id="certTitle" name="title" placeholder="Data Analytics Internship" required>
 
     <label>Issued By</label>
-    <input type="text" id="certIssuer" placeholder="Elevance Skills Technology" required>
+    <input type="text" id="certIssuer" name="issuer" placeholder="Elevance Skills Technology" required>
 
     <label>Category</label>
     <select id="certCategory" required>
@@ -137,7 +137,7 @@ h1{
     <input type="date">
 
     <label>Upload Certificate</label>
-    <input type="file" accept="image/*,.pdf" required>
+    <input type="file" name="certificateImage" accept="image/*,.pdf" required>
 
     <div class="actions">
         <button type="submit" class="btn btn-primary">Upload Certificate</button>
@@ -173,12 +173,6 @@ certForm.addEventListener('input', () => {
     `;
 });
 
-certForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Certificate uploaded successfully! Database connection will be added later.');
-    certForm.reset();
-    preview.textContent = 'Certificate preview will appear here.';
-});
 </script>
 
 </body>

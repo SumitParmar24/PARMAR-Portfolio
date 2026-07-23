@@ -518,19 +518,27 @@ async function loadCertificates() {
 
         certificates.forEach(cert => {
 
-            container.innerHTML += `
-                <div class="certificate-card">
+        container.innerHTML += `
+        <div class="certificate-card">
 
-                    <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
+            <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
 
-                    <h3>${cert.title}</h3>
+            <h3>${cert.title}</h3>
 
-                    <p>${cert.issuer || ''}</p>
+            <p>${cert.issuer || ''}</p>
 
-                </div>
-            `;
+            <div style="margin-top:15px;">
+                <a href="/uploads/certificates/${cert.image}" 
+                   target="_blank"
+                   class="btn btn-primary">
+                   View Certificate
+                </a>
+            </div>
 
-        });
+        </div>
+    `;
+
+});
 
     } catch (error) {
 

@@ -382,6 +382,33 @@ app.delete('/delete-certificate/:id', isAuthenticated, (req, res) => {
 
 });
 
+// Update certificate
+app.put('/update-certificate/:id', isAuthenticated, (req, res) => {
+
+    const certificateId = req.params.id;
+    const { title, issuer } = req.body;
+
+    const sql = `
+        UPDATE certificates
+        SET title = ?, issuer = ?
+        WHERE id = ?
+    `;
+
+    db.query(sql, [title, issuer, certificateId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error updating certificate');
+        }
+
+        console.log('✏️ Certificate updated:', certificateId);
+
+        res.send('Certificate updated successfully');
+
+    });
+
+});
+
 // Contact Form
 app.post('/contact', (req, res) => {
 

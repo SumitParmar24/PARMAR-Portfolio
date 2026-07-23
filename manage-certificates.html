@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Certificates - PARMAR</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f1f5f9;
+    padding:30px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:25px;
+}
+
+.certificate-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.card h3{
+    margin:12px 0 6px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.btn{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-edit{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-delete{
+    background:#dc2626;
+    color:white;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>Manage Certificates</h1>
+
+<div id="certificateGrid" class="certificate-grid">
+    <p>Loading certificates...</p>
+</div>
+```
+
+</div>
+
+<script>
+
+async function loadCertificates(){
+
+    const grid = document.getElementById('certificateGrid');
+
+    try{
+
+        const response = await fetch('/api/certificates');
+        const certificates = await response.json();
+
+        if(!Array.isArray(certificates) || certificates.length === 0){
+            grid.innerHTML = '<p>No certificates found.</p>';
+            return;
+        }
+
+        grid.innerHTML = '';
+
+        certificates.forEach(cert => {
+
+            grid.innerHTML += `
+                <div class="card">
+
+                    <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
+
+                    <h3>${cert.title}</h3>
+
+                    <p><strong>Issuer:</strong> ${cert.issuer || ''}</p>
+
+                    <div class="actions">
+
+                        <button class="btn btn-edit"
+                            onclick="editCertificate(${cert.id}, '${cert.title}', '${cert.issuer}')">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-delete"
+                            onclick="deleteCertificate(${cert.id})">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+        grid.innerHTML = '<p>Error loading certificates.</p>';
+
+    }
+
+}
+
+async function deleteCertificate(id){
+
+    if(!confirm('Delete this certificate?')) return;
+
+    const response = await fetch(`/delete-certificate/${id}`, {
+        method:'DELETE'
+    });
+
+    const result = await response.text();
+
+    alert(result);
+
+    loadCertificates();
+
+}
+
+async function editCertificate(id, oldTitle, oldIssuer){
+
+    const newTitle = prompt('Edit Title', oldTitle);
+    if(!newTitle) return;
+
+    const newIssuer = prompt('Edit Issuer', oldIssuer);
+
+    const response = await fetch(`/update-certificate/${id}`, {
+        method:'PUT',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            title:newTitle,
+            issuer:newIssuer
+        })
+    });
+
+    const result = await response.text();
+
+    alert(result);
+
+    loadCertificates();
+
+}
+
+loadCertificates();
+
+</script>
+
+</body>
+</html>

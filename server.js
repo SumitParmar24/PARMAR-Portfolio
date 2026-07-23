@@ -275,6 +275,54 @@ app.get('/api/projects', (req, res) => {
 
 });
 
+// Change Password
+app.post('/change-password', isAuthenticated, (req, res) => {
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword) {
+        return res.send('New passwords do not match');
+    }
+
+    const sql = 'SELECT * FROM admins WHERE email = ?';
+
+    db.query(sql, [req.session.user.email], async (err, results) => {
+
+        if (err) return res.send('Database Error');
+
+        if (results.length === 0) return res.send('Admin not found');
+
+        const admin = results[0];
+
+        const match = await bcrypt.compare(currentPassword, admin.password);
+
+        if (!match) {
+            return res.send('Current password is incorrect');
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        db.query(
+            'UPDATE admins SET password = ? WHERE id = ?',
+            [hashedPassword, admin.id],
+            (err) => {
+
+                if (err) return res.send('Error updating password');
+
+                res.send(`
+                    <h2 style="color:green;text-align:center;margin-top:50px;">
+                        Password updated successfully!
+                    </h2>
+                    <div style="text-align:center;margin-top:20px;">
+                        <a href="/dashboard">Back to Dashboard</a>
+                    </div>
+                `);
+            }
+        );
+    });
+
+});
+
 // Logout
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {

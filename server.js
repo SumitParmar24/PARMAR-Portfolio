@@ -307,6 +307,81 @@ app.delete('/delete-project/:id', isAuthenticated, (req, res) => {
 
 });
 
+// ==================== CERTIFICATES ====================
+
+// Add certificate
+app.post('/add-certificate', isAuthenticated, upload.single('certificateImage'), (req, res) => {
+
+    const { title, issuer } = req.body;
+    const image = req.file ? req.file.filename : null;
+
+    const sql = `
+        INSERT INTO certificates (title, issuer, image)
+        VALUES (?, ?, ?)
+    `;
+
+    db.query(sql, [title, issuer, image], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Database Error');
+        }
+
+        console.log('📜 Certificate added:', title);
+
+        res.send(`
+            <h2 style="color:green;text-align:center;margin-top:50px;">
+                Certificate added successfully!
+            </h2>
+            <div style="text-align:center;margin-top:20px;">
+                <a href="/upload-certificate.html">Upload Another</a>
+            </div>
+        `);
+
+    });
+
+});
+
+// Get all certificates
+app.get('/api/certificates', (req, res) => {
+
+    const sql = 'SELECT * FROM certificates ORDER BY created_at DESC';
+
+    db.query(sql, (err, results) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Database Error');
+        }
+
+        res.json(results);
+
+    });
+
+});
+
+// Delete certificate
+app.delete('/delete-certificate/:id', isAuthenticated, (req, res) => {
+
+    const certificateId = req.params.id;
+
+    const sql = 'DELETE FROM certificates WHERE id = ?';
+
+    db.query(sql, [certificateId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Error deleting certificate');
+        }
+
+        console.log('🗑️ Certificate deleted:', certificateId);
+
+        res.send('Certificate deleted successfully');
+
+    });
+
+});
+
 // Contact Form
 app.post('/contact', (req, res) => {
 

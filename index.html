@@ -197,36 +197,12 @@ PARMAR
 
 <section id="certificates" class="certificates">
 
-    <h2>Certificates</h2>
+    <div class="container">
 
-    <p class="certificate-subtitle">
-        My certifications and achievements.
-    </p>
+        <h2 class="section-title">Certificates</h2>
 
-    <div class="certificate-container">
-
-        <div class="certificate-card">
-
-            <img src="assets/images/certificate1.jpg" alt="Certificate">
-
-            <h3>SQL Certificate</h3>
-
-            <p>Completed SQL Database Training.</p>
-
-            <a href="#">View Certificate</a>
-
-        </div>
-
-        <div class="certificate-card">
-
-            <img src="assets/images/certificate2.jpg" alt="Certificate">
-
-            <h3>Power BI Certificate</h3>
-
-            <p>Completed Power BI Dashboard Course.</p>
-
-            <a href="#">View Certificate</a>
-
+        <div class="certificates-grid" id="certificatesContainer">
+            <p>Loading certificates...</p>
         </div>
 
     </div>
@@ -518,6 +494,55 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+</script>
+
+<script>
+
+async function loadCertificates() {
+
+    const container = document.getElementById('certificatesContainer');
+
+    try {
+
+        const response = await fetch('/api/certificates');
+        const certificates = await response.json();
+
+        if (!Array.isArray(certificates) || certificates.length === 0) {
+
+            container.innerHTML = '<p>No certificates uploaded yet.</p>';
+            return;
+
+        }
+
+        container.innerHTML = '';
+
+        certificates.forEach(cert => {
+
+            container.innerHTML += `
+                <div class="certificate-card">
+
+                    <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
+
+                    <h3>${cert.title}</h3>
+
+                    <p>${cert.issuer || ''}</p>
+
+                </div>
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+        container.innerHTML = '<p>Error loading certificates.</p>';
+
+    }
+
+}
+
+loadCertificates();
+
 </script>
 
 </body>

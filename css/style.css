@@ -1043,3 +1043,69 @@ body.dark a{
         width: 100%;
     }
 }
+
+/* ================= Mobile cards fix ================= */
+
+@media (max-width: 768px){
+
+    /* Projects */
+    .project-container{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    /* Reports */
+    .report-container{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    /* Certificates */
+    .certificates-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    /* Common card styling */
+    .project-card,
+    .report-card,
+    .certificate-card{
+        width:100%;
+        padding:18px;
+        border-radius:16px;
+    }
+
+    .project-card img,
+    .report-card img,
+    .certificate-card img{
+        width:100%;
+        height:180px;
+        object-fit:cover;
+        border-radius:12px;
+    }
+
+    .project-card h3,
+    .report-card h3,
+    .certificate-card h3{
+        font-size:1.1rem;
+        margin-top:12px;
+    }
+
+    .project-card p,
+    .report-card p,
+    .certificate-card p{
+        font-size:0.95rem;
+        line-height:1.6;
+    }
+
+    .project-card .btn,
+    .report-card .btn,
+    .certificate-card .btn{
+        width:100%;
+        text-align:center;
+        margin-top:12px;
+    }
+}

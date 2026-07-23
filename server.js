@@ -22,12 +22,37 @@ app.use(session({
 app.use(express.static(__dirname));
 
 // Resume upload storage
+// Upload storage (Resume, Projects, Certificates)
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+
+        // Resume upload
+        if (req.originalUrl.includes('upload-resume')) {
+            cb(null, 'uploads/');
+        }
+
+        // Certificate upload
+        else if (req.originalUrl.includes('certificate')) {
+            cb(null, 'uploads/certificates');
+        }
+
+        // Project upload
+        else {
+            cb(null, 'uploads/projects');
+        }
     },
+
     filename: (req, file, cb) => {
-        cb(null, 'resume.pdf');
+
+        // Resume ka naam fixed rahega
+        if (req.originalUrl.includes('upload-resume')) {
+            cb(null, 'resume.pdf');
+        }
+
+        // Projects aur Certificates ke liye unique naam
+        else {
+            cb(null, Date.now() + '-' + file.originalname);
+        }
     }
 });
 

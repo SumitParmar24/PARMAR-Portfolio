@@ -77,6 +77,18 @@ const projectStorage = multer.diskStorage({
     }
 });
 
+// Profile photo storage
+const profileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'assets/images/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'profile.jpg'); // hamesha same naam
+    }
+});
+
+const uploadProfile = multer({ storage: profileStorage });
+
 
 // Report PDF storage
 // Report PDF storage
@@ -320,6 +332,23 @@ app.post('/change-password', isAuthenticated, (req, res) => {
             }
         );
     });
+
+});
+
+// Upload Profile Photo
+app.post('/upload-profile', isAuthenticated, uploadProfile.single('profile'), (req, res) => {
+
+    console.log('🖼️ Profile photo updated');
+
+    res.send(`
+        <h2 style="color:green;text-align:center;margin-top:50px;">
+            Profile photo updated successfully!
+        </h2>
+
+        <div style="text-align:center;margin-top:20px;">
+            <a href="/dashboard">Back to Dashboard</a>
+        </div>
+    `);
 
 });
 

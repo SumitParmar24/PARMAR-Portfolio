@@ -79,16 +79,25 @@ const projectStorage = multer.diskStorage({
 
 
 // Report PDF storage
+// Report PDF storage
+const fs = require('fs');
+
 const reportStorage = multer.diskStorage({
     destination: (req, file, cb) => {
+
+        // reports folder nahi hai to bana do
+        if (!fs.existsSync('uploads/reports')) {
+            fs.mkdirSync('uploads/reports', { recursive: true });
+        }
+
         cb(null, 'uploads/reports/');
     },
+
     filename: (req, file, cb) => {
         const uniqueName = Date.now() + '-' + file.originalname;
         cb(null, uniqueName);
     }
 });
-
 const uploadReport = multer({ storage: reportStorage });
 const uploadProject = multer({ storage: projectStorage });
 

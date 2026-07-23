@@ -958,3 +958,88 @@ body.dark a{
 .certificate-card .btn:hover{
     background:#1d4ed8;
 }
+
+/* ================= MOBILE RESPONSIVE FIX ================= */
+
+@media (max-width: 768px){
+
+    nav{
+        padding: 12px 20px;
+    }
+
+    .hero{
+        flex-direction: column;
+        text-align: center;
+        padding: 120px 20px 60px;
+        gap: 30px;
+    }
+
+    .hero-text{
+        width: 100%;
+    }
+
+    .hero-text h1{
+        font-size: 2.2rem;
+        line-height: 1.2;
+    }
+
+    .hero-text h2{
+        font-size: 1.3rem;
+        margin-top: 10px;
+    }
+
+    .hero-text p{
+        font-size: 1rem;
+        line-height: 1.7;
+        max-width: 100%;
+        margin: 10px auto;
+    }
+
+    .buttons{
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .social-links{
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .hero-image{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .hero-image img{
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .about{
+        padding: 60px 20px;
+    }
+
+    .about-text{
+        width: 100%;
+        text-align: center;
+    }
+
+    .project-container,
+    .report-container,
+    .service-container{
+        grid-template-columns: 1fr;
+    }
+
+    .contact-container{
+        flex-direction: column;
+    }
+
+    .contact-form{
+        width: 100%;
+    }
+}

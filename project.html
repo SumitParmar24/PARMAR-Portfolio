@@ -136,7 +136,11 @@
         document.getElementById('projectTitle').textContent = project.title;
         document.getElementById('projectTech').textContent = project.technology || 'Technology';
         document.getElementById('projectDesc').textContent = project.description;
-        document.getElementById('projectImage').src = '/uploads/projects/' + project.image;
+        if (project.image.startsWith('project')) {
+    document.getElementById('projectImage').src = '/assets/images/' + project.image;
+} else {
+    document.getElementById('projectImage').src = '/uploads/projects/' + project.image;
+}
 
         document.getElementById('githubBtn').href = project.github || '#';
         document.getElementById('demoBtn').href = project.demo || '#';

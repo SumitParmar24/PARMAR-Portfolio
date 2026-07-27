@@ -521,14 +521,14 @@ async function loadCertificates() {
         container.innerHTML += `
         <div class="certificate-card">
 
-            <img src="/uploads/certificates/${cert.image}" alt="${cert.title}">
+            <img src="${cert.image}" alt="${cert.title}">
 
             <h3>${cert.title}</h3>
 
             <p>${cert.issuer || ''}</p>
 
             <div style="margin-top:15px;">
-                <a href="/uploads/certificates/${cert.image}" 
+                <a href="${cert.image}"
                    target="_blank"
                    class="btn btn-primary">
                    View Certificate

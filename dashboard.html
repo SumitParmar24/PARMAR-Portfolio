@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Admin Dashboard - PARMAR</title>
 
+
+
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -14,293 +19,528 @@
     font-family:Arial,sans-serif;
 }
 
+
 body{
     display:flex;
     min-height:100vh;
     background:#f1f5f9;
 }
 
+
+
 /* Sidebar */
 
 .sidebar{
+
     width:260px;
     background:#111827;
     color:white;
     padding:30px 20px;
+
 }
+
 
 .sidebar h2{
+
     color:#38bdf8;
-    margin-bottom:40px;
     text-align:center;
+    margin-bottom:40px;
+
 }
+
 
 .sidebar ul{
+
     list-style:none;
+
 }
 
-.sidebar ul li{
+
+.sidebar li{
+
     margin:18px 0;
+
 }
 
-.sidebar ul li a{
+
+.sidebar a{
+
     color:white;
     text-decoration:none;
     display:block;
-    padding:12px 15px;
+    padding:12px;
     border-radius:8px;
-    transition:.3s;
+
 }
 
-.sidebar ul li a:hover{
+
+.sidebar a:hover{
+
     background:#38bdf8;
+
 }
 
-/* Main Content */
+
+
+/* Main */
+
 
 .main{
+
     flex:1;
     padding:30px;
+
 }
 
-.main h1{
-    margin-bottom:30px;
-    color:#111827;
-}
 
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:25px;
-}
-
-.card{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-.card h3{
-    color:#64748b;
-    margin-bottom:10px;
-}
-
-.card p{
-    font-size:32px;
-    font-weight:bold;
-    color:#38bdf8;
-}
-
-.welcome{
-    margin-top:35px;
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-.welcome h2{
-    margin-bottom:10px;
-    color:#111827;
-}
-
-.welcome p{
-    color:#475569;
-    line-height:1.7;
-}
 
 .topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+
 }
+
+
 
 .logout-btn{
-    text-decoration:none;
-    background:#ef4444;
-    color:white;
-    padding:10px 18px;
-    border-radius:8px;
-    transition:.3s;
+
+background:#ef4444;
+color:white;
+padding:10px 18px;
+border-radius:8px;
+text-decoration:none;
+
 }
 
-.logout-btn:hover{
-    background:#dc2626;
+
+
+/* Cards */
+
+
+.cards{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+
 }
 
-.stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin:30px 0;
+
+
+.card{
+
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
 }
 
-.stat-card{
-    background:white;
-    padding:25px;
-    border-radius:16px;
-    text-align:center;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+
+.card h3{
+
+color:#64748b;
+margin-bottom:15px;
+
 }
 
-.stat-card h3{
-    font-size:2.5rem;
-    color:#2563eb;
-    margin-bottom:10px;
+
+.card h1{
+
+font-size:32px;
+color:#2563eb;
+
 }
 
-.stat-card p{
-    color:#475569;
-    font-weight:600;
+
+
+/* Visitor Table */
+
+
+.welcome{
+
+margin-top:35px;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
 }
+
+
+
+table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+
+}
+
+
+th{
+
+background:#111827;
+color:white;
+padding:12px;
+
+}
+
+
+td{
+
+padding:12px;
+border-bottom:1px solid #ddd;
+
+}
+
+
+
 </style>
+
 
 </head>
 
+
 <body>
 
-```
+
+
 <div class="sidebar">
 
-    <h2>PARMAR</h2>
 
-    <ul>
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="profile-upload.html">Upload Profile Photo</a></li>
-        <li><a href="add-project.html">Add Project</a></li>
-        <li><a href="manage-projects.html">Manage Projects</a></li>
-        <li><a href="manage-skills.html">Manage Skills</a></li>
-        <li><a href="upload-report.html">Upload Report</a></li>
-        <li><a href="upload-certificate.html">Upload Certificate</a></li>
-        <li><a href="manage-certificates.html">Manage Certificates</a></li>
-        <li><a href="messages.html">Contact Messages</a></li>
-        <li><a href="/resume-upload.html">Upload Resume</a></li>
-        <li><a href="change-password.html">Change Password</a></li>
-        <li><a href="settings.html">Settings</a></li>
-    </ul>
+<h2>PARMAR</h2>
+
+
+<ul>
+
+<li><a href="#">Dashboard</a></li>
+
+<li><a href="profile-upload.html">Upload Profile Photo</a></li>
+
+<li><a href="add-project.html">Add Project</a></li>
+
+<li><a href="manage-projects.html">Manage Projects</a></li>
+
+<li><a href="manage-skills.html">Manage Skills</a></li>
+
+<li><a href="upload-report.html">Upload Report</a></li>
+
+<li><a href="upload-certificate.html">Upload Certificate</a></li>
+
+<li><a href="manage-certificates.html">Manage Certificates</a></li>
+
+<li><a href="messages.html">Contact Messages</a></li>
+
+<li><a href="/resume-upload.html">Upload Resume</a></li>
+
+<li><a href="change-password.html">Change Password</a></li>
+
+</ul>
+
 
 </div>
+
+
+
+
 
 <div class="main">
 
-    <div class="topbar">
-        <h1>Admin Dashboard</h1>
-        <a href="/logout" class="logout-btn">Logout</a>
-    </div>
 
-    <div class="cards">
 
-    <div class="card">
-        <h3>Total Projects</h3>
-        <h1 id="totalProjects">0</h1>
-    </div>
+<div class="topbar">
 
-    <div class="card">
-        <h3>Total Reports</h3>
-        <p>2</p>
-    </div>
 
-    <div class="card">
-        <h3>Total Certificates</h3>
-        <p>2</p>
-    </div>
+<h1>Admin Dashboard</h1>
 
-    <div class="card">
-        <h3>Total Messages</h3>
-        <h1 id="totalMessages">0</h1>
-    </div>
+
+<a href="/logout" class="logout-btn">
+Logout
+</a>
+
 
 </div>
 
-    <div class="welcome">
 
-        <h2>Welcome, Sumit 👋</h2>
 
-        <p>
-            This is your portfolio admin dashboard. From here you will be able
-            to manage projects, upload reports and certificates, and monitor
-            contact form messages once the backend is connected.
-        </p>
 
-    </div>
+<div class="cards">
 
-    <div class="stats">
 
-    <div class="stat-card">
-        <h3 id="projectCount">0</h3>
-        <p>Projects</p>
-    </div>
 
-    <div class="stat-card">
-        <h3 id="reportCount">0</h3>
-        <p>Reports</p>
-    </div>
+<div class="card">
+<h3>Total Projects</h3>
+<h1 id="totalProjects">0</h1>
+</div>
 
-    <div class="stat-card">
-        <h3 id="certificateCount">0</h3>
-        <p>Certificates</p>
-    </div>
 
-    <div class="stat-card">
-        <h3 id="messageCount">0</h3>
-        <p>Messages</p>
-    </div>
+
+<div class="card">
+<h3>Total Reports</h3>
+<h1 id="totalReports">0</h1>
+</div>
+
+
+
+<div class="card">
+<h3>Total Certificates</h3>
+<h1 id="totalCertificates">0</h1>
+</div>
+
+
+
+
+<div class="card">
+<h3>Total Messages</h3>
+<h1 id="totalMessages">0</h1>
+</div>
+
+
+
+
+<div class="card">
+<h3>Today Visitors</h3>
+<h1 id="todayVisitors">0</h1>
+</div>
+
+
+
+
+<div class="card">
+<h3>This Week Visitors</h3>
+<h1 id="weekVisitors">0</h1>
+</div>
+
+
+
+
+<div class="card">
+<h3>Total Visitors</h3>
+<h1 id="totalVisitors">0</h1>
+</div>
+
+
+
 
 </div>
 
+
+
+
+
+
+<div class="welcome">
+
+
+<h2>Recent Visitors</h2>
+
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>IP Address</th>
+
+<th>City</th>
+
+<th>Country</th>
+
+<th>Device</th>
+
+<th>Browser</th>
+
+<th>Time</th>
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="visitorTable">
+
+
+</tbody>
+
+
+</table>
+
+
 </div>
+
+
+
+
+</div>
+
+
+
+
+
 
 <script>
 
-async function loadStats(){
 
-    const response = await fetch('/api/stats');
-    const stats = await response.json();
-
-    document.getElementById('totalProjects').textContent = stats.projects;
-    document.getElementById('totalMessages').textContent = stats.messages;
-
-}
-
-loadStats();
-
-</script>
-```
-
-<script>
 
 async function loadStats(){
 
-    // Projects
-    const projectRes = await fetch('/api/projects');
-    const projects = await projectRes.json();
-    document.getElementById('projectCount').textContent =
-        Array.isArray(projects) ? projects.length : 0;
 
-    // Reports
-    const reportRes = await fetch('/api/reports');
-    const reports = await reportRes.json();
-    document.getElementById('reportCount').textContent =
-        Array.isArray(reports) ? reports.length : 0;
+const projects =
+await fetch('/api/projects').then(r=>r.json());
 
-    // Certificates
-    const certRes = await fetch('/api/certificates');
-    const certificates = await certRes.json();
-    document.getElementById('certificateCount').textContent =
-        Array.isArray(certificates) ? certificates.length : 0;
 
-    // Messages
-    const msgRes = await fetch('/api/messages');
-    const messages = await msgRes.json();
-    document.getElementById('messageCount').textContent =
-        Array.isArray(messages) ? messages.length : 0;
+document.getElementById("totalProjects").innerText =
+Array.isArray(projects)?projects.length:0;
+
+
+
+const reports =
+await fetch('/api/reports').then(r=>r.json());
+
+
+document.getElementById("totalReports").innerText =
+Array.isArray(reports)?reports.length:0;
+
+
+
+
+const certificates =
+await fetch('/api/certificates').then(r=>r.json());
+
+
+document.getElementById("totalCertificates").innerText =
+Array.isArray(certificates)?certificates.length:0;
+
+
+
+
+
+const messages =
+await fetch('/api/messages').then(r=>r.json());
+
+
+document.getElementById("totalMessages").innerText =
+Array.isArray(messages)?messages.length:0;
+
+
+
 }
+
+
 
 loadStats();
 
+
+
+
+
+
+
+async function loadVisitorStats(){
+
+
+const data =
+await fetch('/api/visitor-stats')
+.then(r=>r.json());
+
+
+
+document.getElementById("todayVisitors").innerText=data.today;
+
+
+document.getElementById("weekVisitors").innerText=data.week;
+
+
+document.getElementById("totalVisitors").innerText=data.total;
+
+
+
+}
+
+
+
+loadVisitorStats();
+
+
+
+
+
+
+
+
+async function loadRecentVisitors(){
+
+
+
+const visitors =
+await fetch('/api/recent-visitors')
+.then(r=>r.json());
+
+
+
+const table =
+document.getElementById("visitorTable");
+
+
+
+table.innerHTML="";
+
+
+
+visitors.forEach(v=>{
+
+
+table.innerHTML += `
+
+
+<tr>
+
+<td>${v.ip_address}</td>
+
+<td>${v.city || "-"}</td>
+
+<td>${v.country || "-"}</td>
+
+<td>${v.device}</td>
+
+<td>${v.browser}</td>
+
+<td>${new Date(v.created_at).toLocaleString()}</td>
+
+
+</tr>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+loadRecentVisitors();
+
+
+
+
 </script>
+
+
+
 
 </body>
+
 </html>

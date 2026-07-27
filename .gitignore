@@ -1,0 +1,4 @@
+node_modules
+.env
+uploads
+PARMAR_backup_*.zip

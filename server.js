@@ -1,11 +1,70 @@
+require('dotenv').config();
+console.log("SERVER FILE LOADED");
+
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const multer = require('multer');
+const geoip = require('geoip-lite');
+
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const certificateStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "PARMAR/certificates",
+        allowed_formats: ["jpg", "jpeg", "png", "webp", "pdf"]
+    }
+});
+
+const projectStorageCloud = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "PARMAR/projects",
+        allowed_formats: ["jpg", "jpeg", "png", "webp"]
+    }
+});
+
+const reportStorageCloud = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "PARMAR/reports",
+        allowed_formats: ["pdf"]
+    }
+});
+
+const uploadCertificateCloud = multer({
+    storage: certificateStorage
+});
+
+const uploadProjectCloud = multer({
+    storage: projectStorageCloud
+});
+
+const uploadReportCloud = multer({
+    storage: reportStorageCloud
+});
 
 const app = express();
+
+app.use((req,res,next)=>{
+    console.log("GLOBAL REQUEST:", req.method, req.url);
+    next();
+});
+
+app.get('/test-api', (req, res) => {
+    res.send("API WORKING");
+});
+
 const PORT = 3000;
 
 // Form data read karne ke liye
@@ -20,6 +79,8 @@ app.use(session({
 
 // Static files
 app.use(express.static(__dirname));
+
+
 
 // Resume upload storage
 // Upload storage (Resume, Projects, Certificates)
@@ -116,8 +177,158 @@ const uploadProject = multer({ storage: projectStorage });
 // Uploads folder public
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Visitor Tracking Middleware
+
+app.use((req, res, next) => {
+
+    console.log("🔥 REQUEST RECEIVED:", req.method, req.path);
+
+    // Same browser session ko baar-baar count nahi karna
+
+
+    // tumhara baki visitor code yaha hai
+
+    // Ignore API and Admin requests
+if(
+    req.path.startsWith('/api') ||
+    req.path.startsWith('/uploads') ||
+    req.path.includes('dashboard') ||
+    req.path.includes('admin') ||
+    req.path.includes('login') ||
+    req.path.includes('logout') ||
+    req.path.endsWith('.html') ||
+    req.path.endsWith('.css') ||
+    req.path.endsWith('.js') ||
+    req.path.endsWith('.jpg') ||
+    req.path.endsWith('.png') ||
+    req.path === '/favicon.ico'
+){
+    return next();
+}
+
+
+
+    // Static files ko count nahi karna
+    if(
+        req.url.includes('.css') ||
+        req.url.includes('.js') ||
+        req.url.includes('.jpg') ||
+        req.url.includes('.png') ||
+        req.url.includes('.pdf')
+    ){
+        return next();
+    }
+
+
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+    let visitorIP = ip;
+
+if(visitorIP === "::1"){
+    visitorIP = "127.0.0.1";
+}
+
+const location = geoip.lookup(visitorIP);
+
+const city = location ? location.city : "Unknown";
+const country = location ? location.country : "Unknown";
+
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+
+
+    let device = "Desktop";
+
+    if(/mobile/i.test(userAgent)){
+        device = "Mobile";
+    }
+
+
+    let browser = "Unknown";
+
+    if(userAgent.includes("Chrome")){
+        browser = "Chrome";
+    }
+    else if(userAgent.includes("Edg")){
+        browser = "Edge";
+    }
+    else if(userAgent.includes("Firefox")){
+        browser = "Firefox";
+    }
+
+
+    let os = "Unknown";
+
+    if(userAgent.includes("Windows")){
+        os = "Windows";
+    }
+    else if(userAgent.includes("Android")){
+        os = "Android";
+    }
+    else if(userAgent.includes("iPhone")){
+        os = "iOS";
+    }
+
+    if(req.path === "/favicon.ico"){
+    return next();
+}
+
+    console.log("SAVING VISITOR PAGE:", req.path);
+
+    const page = req.path;
+
+    if(page !== "/"){
+    return next();
+}
+
+
+    const sql = `
+INSERT INTO visitors 
+(ip_address, city, country, device, browser, os, page, visit_date)
+
+SELECT ?,?,?,?,?,?, ?, CURDATE()
+
+WHERE NOT EXISTS (
+
+SELECT 1 FROM visitors
+
+WHERE ip_address = ?
+
+AND visit_date = CURDATE()
+
+)
+`;
+
+
+
+db.query(
+    sql,
+    [
+    visitorIP,
+    city,
+    country,
+    device,
+    browser,
+    os,
+    page,
+    visitorIP
+],
+    (err) => {
+        if (err) {
+            console.log("Visitor Save Error:", err);
+        } else {
+            console.log("Visitor Saved:", visitorIP, city, country, page);
+        }
+    }
+);
+
+
+
+    next();
+
+});
+
 // MySQL connection
-const db = mysql.createConnection({
+const db = mysql.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER,
@@ -125,29 +336,17 @@ const db = mysql.createConnection({
     database: process.env.DB_NAME,
     ssl: {
         rejectUnauthorized: false
-    }
+    },
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 // Connect to MySQL
-db.connect((err) => {
-    if (err) {
-        console.error('❌ Database connection failed:', err);
-        return;
-    }
 
-    console.log('✅ MySQL Connected');
-});
 
 // Connect database
-db.connect((err) => {
 
-    if (err) {
-        console.log('❌ Database connection failed:', err.message);
-    } else {
-        console.log('✅ MySQL Connected');
-    }
-
-});
 
 // Home page
 app.get('/', (req, res) => {
@@ -404,10 +603,10 @@ app.delete('/delete-project/:id', isAuthenticated, (req, res) => {
 // ==================== CERTIFICATES ====================
 
 // Add certificate
-app.post('/add-certificate', isAuthenticated, upload.single('certificateImage'), (req, res) => {
+app.post('/add-certificate', isAuthenticated, uploadCertificateCloud.single('certificate'), (req, res) => {
 
     const { title, issuer } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const image = req.file ? req.file.path : null;
 
     const sql = `
         INSERT INTO certificates (title, issuer, image)
@@ -607,6 +806,99 @@ app.get('/api/stats', isAuthenticated, (req, res) => {
         });
 
     });
+
+});
+
+// Visitor Stats API
+app.get('/api/visitor-stats', (req,res)=>{
+
+    const todaySql = `
+        SELECT COUNT(*) AS total 
+        FROM visitors 
+        WHERE DATE(created_at) = CURDATE()
+    `;
+
+    const weekSql = `
+        SELECT COUNT(*) AS total 
+        FROM visitors 
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    `;
+
+    const totalSql = `
+        SELECT COUNT(*) AS total 
+        FROM visitors
+    `;
+
+
+    db.query(todaySql, (err, todayResult) => {
+
+        if(err){
+            console.log(err);
+            return res.status(500).json({});
+        }
+
+
+        db.query(weekSql, (err, weekResult) => {
+
+            if(err){
+                console.log(err);
+                return res.status(500).json({});
+            }
+
+
+            db.query(totalSql, (err, totalResult) => {
+
+                if(err){
+                    console.log(err);
+                    return res.status(500).json({});
+                }
+
+
+                res.json({
+
+                    today: todayResult[0].total,
+                    week: weekResult[0].total,
+                    total: totalResult[0].total
+
+                });
+
+
+            });
+
+
+        });
+
+
+    });
+
+
+});
+
+console.log("Recent visitors API loaded");
+
+// Recent Visitors API
+app.get('/api/recent-visitors', isAuthenticated, (req,res)=>{
+
+    const sql = `
+        SELECT *
+        FROM visitors
+        ORDER BY created_at DESC
+        LIMIT 10
+    `;
+
+
+    db.query(sql,(err,result)=>{
+
+        if(err){
+            console.log(err);
+            return res.status(500).json([]);
+        }
+
+
+        res.json(result);
+
+    });
+
 
 });
 
@@ -818,7 +1110,14 @@ app.delete('/delete-skill/:id', isAuthenticated, (req, res) => {
 
 });
 
+
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
+
+
+setInterval(() => {
+    console.log("SERVER ALIVE");
+}, 5000);

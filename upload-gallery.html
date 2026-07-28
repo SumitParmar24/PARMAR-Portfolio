@@ -26,6 +26,7 @@
 
 .gallery-form h2{
     margin-bottom:25px;
+    text-align:center;
 }
 
 .gallery-form label{
@@ -36,11 +37,19 @@
 }
 
 .gallery-form input,
-.gallery-form select{
+.gallery-form select,
+.gallery-form textarea{
     width:100%;
     padding:12px;
     border:1px solid #ddd;
     border-radius:8px;
+    font-size:15px;
+    box-sizing:border-box;
+}
+
+.gallery-form textarea{
+    min-height:120px;
+    resize:vertical;
 }
 
 button{
@@ -69,11 +78,13 @@ button:hover{
 
 <form
 class="gallery-form"
-action="/upload-gallery"
+action="/upload-project-gallery"
 method="POST"
 enctype="multipart/form-data">
 
-<h2>Upload Gallery Images</h2>
+<h2 style="color:red;">
+    TEST 123 - Upload Project Gallery Image
+</h2>
 
 <label>Select Project</label>
 
@@ -86,18 +97,31 @@ required>
 
 </select>
 
-<label>Select Images</label>
+<label>Image Title</label>
+
+<input
+type="text"
+name="title"
+placeholder="Example: Executive Dashboard"
+required>
+
+<label>Description</label>
+
+<textarea
+name="description"
+placeholder="Write a short description..."></textarea>
+
+<label>Select Image</label>
 
 <input
 type="file"
-name="gallery"
-multiple
+name="image"
 accept="image/*"
 required>
 
-<button>
+<button type="submit">
 
-Upload Images
+Upload Gallery Image
 
 </button>
 
@@ -109,27 +133,35 @@ Upload Images
 
 async function loadProjects(){
 
-const response = await fetch('/api/projects');
+    try{
 
-const projects = await response.json();
+        const response = await fetch('/api/projects');
 
-const select = document.getElementById('projectSelect');
+        const projects = await response.json();
 
-select.innerHTML='<option value="">Select Project</option>';
+        const select = document.getElementById('projectSelect');
 
-projects.forEach(project=>{
+        select.innerHTML = '<option value="">Select Project</option>';
 
-select.innerHTML+=`
+        projects.forEach(project=>{
 
-<option value="${project.id}">
+            select.innerHTML += `
+                <option value="${project.id}">
+                    ${project.title}
+                </option>
+            `;
 
-${project.title}
+        });
 
-</option>
+    }
 
-`;
+    catch(err){
 
-});
+        console.log(err);
+
+        alert("Unable to load projects.");
+
+    }
 
 }
 

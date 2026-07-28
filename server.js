@@ -12,6 +12,10 @@ const geoip = require('geoip-lite');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
+console.log("Cloud Name:", process.env.CLOUDINARY_CLOUD_NAME);
+console.log("API Key:", process.env.CLOUDINARY_API_KEY);
+console.log("API Secret:", process.env.CLOUDINARY_API_SECRET);
+
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -27,19 +31,31 @@ const certificateStorage = new CloudinaryStorage({
 });
 
 const projectStorageCloud = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
+    cloudinary,
+    params: async (req, file) => ({
         folder: "PARMAR/projects",
-        allowed_formats: ["jpg", "jpeg", "png", "webp"]
-    }
+        resource_type: "image"
+    })
+});
+
+const projectGalleryStorage = new CloudinaryStorage({
+    cloudinary,
+    params: async (req, file) => ({
+        folder: "PARMAR/project-gallery",
+        resource_type: "image"
+    })
+});
+
+const uploadProjectGalleryCloud = multer({
+    storage: projectGalleryStorage
 });
 
 const reportStorageCloud = new CloudinaryStorage({
     cloudinary,
     params: async (req, file) => ({
         folder: "PARMAR/reports",
-        resource_type: "raw",
-        format: "pdf"
+        resource_type: "image",
+        type: "upload"
     })
 });
 
@@ -474,6 +490,49 @@ app.post('/add-project', isAuthenticated, uploadProjectCloud.single('image'), (r
         });
 
 });
+
+// Upload Project Gallery Image
+app.post(
+    '/upload-project-gallery',
+    isAuthenticated,
+    uploadProjectGalleryCloud.single('image'),
+    (req, res) => {
+
+        console.log("Gallery Image:", req.file);
+
+        const { project_id, title, description } = req.body;
+
+        const image = req.file ? req.file.path : null;
+
+        if (!image) {
+            return res.status(400).send("Image upload failed");
+        }
+
+        const sql = `
+            INSERT INTO project_images
+            (project_id, title, description, image)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(
+            sql,
+            [project_id, title, description, image],
+            (err, result) => {
+
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send("Database Error");
+                }
+
+                console.log("🖼 Gallery Image Uploaded");
+
+                res.send("Gallery Image Uploaded Successfully");
+            }
+        );
+
+    }
+);
+
 // API - Get all projects
 app.get('/api/projects', (req, res) => {
 
@@ -483,6 +542,31 @@ app.get('/api/projects', (req, res) => {
 
         if (err) {
             return res.status(500).json({ error: 'Database Error' });
+        }
+
+        res.json(results);
+
+    });
+
+});
+
+// Get Gallery Images by Project
+app.get('/api/project-images/:projectId', (req, res) => {
+
+    const projectId = req.params.projectId;
+
+    const sql = `
+        SELECT *
+        FROM project_images
+        WHERE project_id = ?
+        ORDER BY id ASC
+    `;
+
+    db.query(sql, [projectId], (err, results) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).json([]);
         }
 
         res.json(results);

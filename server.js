@@ -520,9 +520,9 @@ app.post(
             (err, result) => {
 
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send("Database Error");
-                }
+    console.log("GALLERY INSERT ERROR:", err);
+    return res.status(500).send(err.message);
+}
 
                 console.log("🖼 Gallery Image Uploaded");
 
@@ -550,6 +550,31 @@ app.get('/api/projects', (req, res) => {
 
 });
 
+// Get Single Project
+app.get('/api/project/:id', (req,res)=>{
+
+    const id = req.params.id;
+
+    const sql = `
+        SELECT * FROM projects
+        WHERE id = ?
+    `;
+
+    db.query(sql,[id],(err,result)=>{
+
+        if(err){
+            console.log(err);
+            return res.status(500).json({
+                error:"Database Error"
+            });
+        }
+
+        res.json(result[0]);
+
+    });
+
+});
+
 // Get Gallery Images by Project
 app.get('/api/project-images/:projectId', (req, res) => {
 
@@ -565,7 +590,7 @@ app.get('/api/project-images/:projectId', (req, res) => {
     db.query(sql, [projectId], (err, results) => {
 
         if (err) {
-            console.log(err);
+            console.log("GALLERY API ERROR:", err);
             return res.status(500).json([]);
         }
 
@@ -661,6 +686,12 @@ app.delete('/delete-project/:id', isAuthenticated, (req, res) => {
 app.post('/add-certificate', isAuthenticated, uploadCertificateCloud.single('certificate'), (req, res) => {
 
     const { title, issuer } = req.body;
+
+    console.log("PROJECT ID:", project_id);
+console.log("TITLE:", title);
+console.log("IMAGE:", image);
+
+
     const image = req.file ? req.file.path : null;
 
     const sql = `

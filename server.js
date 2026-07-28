@@ -909,6 +909,8 @@ app.get('/api/recent-visitors', isAuthenticated, (req,res)=>{
 // Upload Report
 app.post('/upload-report', isAuthenticated, uploadReportCloud.single('report'), (req, res) => {
 
+    console.log("Cloudinary file:", req.file);
+
     const { title, description } = req.body;
 
     const file = req.file ? req.file.path : null;

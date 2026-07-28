@@ -35,11 +35,12 @@ const projectStorageCloud = new CloudinaryStorage({
 });
 
 const reportStorageCloud = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
+    cloudinary,
+    params: async (req, file) => ({
         folder: "PARMAR/reports",
-        allowed_formats: ["pdf"]
-    }
+        resource_type: "raw",
+        format: "pdf"
+    })
 });
 
 const uploadCertificateCloud = multer({

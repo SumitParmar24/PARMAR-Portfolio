@@ -136,9 +136,19 @@
         document.getElementById('projectTitle').textContent = project.title;
         document.getElementById('projectTech').textContent = project.technology || 'Technology';
         document.getElementById('projectDesc').textContent = project.description;
-        if (project.image.startsWith('project')) {
+        if (
+    project.image &&
+    (project.image.startsWith('http://') || project.image.startsWith('https://'))
+) {
+    // Cloudinary image
+    document.getElementById('projectImage').src = project.image;
+}
+else if (project.image && project.image.startsWith('project')) {
+    // Default local image
     document.getElementById('projectImage').src = '/assets/images/' + project.image;
-} else {
+}
+else {
+    // Old uploaded local image
     document.getElementById('projectImage').src = '/uploads/projects/' + project.image;
 }
 

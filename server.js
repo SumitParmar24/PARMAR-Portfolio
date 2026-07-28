@@ -538,22 +538,6 @@ app.post('/change-password', isAuthenticated, (req, res) => {
 
 });
 
-// Upload Profile Photo
-app.post('/add-project', isAuthenticated, uploadProjectCloud.single('image'), (req, res) => {
-
-    console.log('🖼️ Profile photo updated');
-
-    res.send(`
-        <h2 style="color:green;text-align:center;margin-top:50px;">
-            Profile photo updated successfully!
-        </h2>
-
-        <div style="text-align:center;margin-top:20px;">
-            <a href="/dashboard">Back to Dashboard</a>
-        </div>
-    `);
-
-});
 
 // Logout
 app.get('/logout', (req, res) => {
@@ -562,25 +546,7 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// API - Get all projects
-app.get('/api/projects', (req, res) => {
 
-    const sql = 'SELECT * FROM projects';
-
-    db.query(sql, (err, results) => {
-
-        if (err) {
-            console.log('API Error:', err);
-            return res.status(500).send('Database Error');
-        }
-
-        console.log('📦 Projects API called');
-
-        res.json(results);
-
-    });
-
-});
 
 // Delete Project
 app.delete('/delete-project/:id', isAuthenticated, (req, res) => {

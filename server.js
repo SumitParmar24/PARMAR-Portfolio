@@ -50,6 +50,10 @@ const uploadProjectCloud = multer({
     storage: projectStorageCloud
 });
 
+const uploadGalleryCloud = multer({
+    storage: projectStorageCloud
+});
+
 const uploadReportCloud = multer({
     storage: reportStorageCloud
 });
@@ -434,11 +438,11 @@ app.get('/dashboard', isAuthenticated, (req, res) => {
 
 // Add Project
 // Add Project with image upload
-app.post('/add-project', isAuthenticated, uploadProject.single('image'), (req, res) => {
+app.post('/add-project', isAuthenticated, uploadProjectCloud.single('image'), (req, res) => {
 
     const { title, technology, description, github, demo } = req.body;
 
-    const image = req.file ? req.file.filename : null;
+    const image = req.file ? req.file.path : null;
 
     const sql = `
         INSERT INTO projects (title, technology, description, github, demo, image)
@@ -535,7 +539,7 @@ app.post('/change-password', isAuthenticated, (req, res) => {
 });
 
 // Upload Profile Photo
-app.post('/upload-profile', isAuthenticated, uploadProfile.single('profile'), (req, res) => {
+app.post('/add-project', isAuthenticated, uploadProjectCloud.single('image'), (req, res) => {
 
     console.log('🖼️ Profile photo updated');
 
@@ -903,11 +907,11 @@ app.get('/api/recent-visitors', isAuthenticated, (req,res)=>{
 });
 
 // Upload Report
-app.post('/upload-report', isAuthenticated, uploadReport.single('report'), (req, res) => {
+app.post('/upload-report', isAuthenticated, uploadReportCloud.single('report'), (req, res) => {
 
     const { title, description } = req.body;
 
-    const file = req.file ? req.file.filename : null;
+    const file = req.file ? req.file.path : null;
 
     const sql = `
         INSERT INTO reports (title, description, file)
@@ -994,23 +998,6 @@ app.delete('/delete-report/:id', isAuthenticated, (req, res) => {
         res.send('Report deleted successfully');
 
     });
-
-});
-
-// Upload Resume
-app.post('/upload-resume', isAuthenticated, upload.single('resume'), (req, res) => {
-
-    console.log('📄 Resume uploaded');
-
-    res.send(`
-        <h2 style="color:green;text-align:center;margin-top:50px;">
-            Resume uploaded successfully!
-        </h2>
-
-        <div style="text-align:center;margin-top:20px;">
-            <a href="/dashboard">Back to Dashboard</a>
-        </div>
-    `);
 
 });
 

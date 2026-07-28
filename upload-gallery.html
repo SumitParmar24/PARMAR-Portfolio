@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Upload Project Gallery</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<style>
+
+.container{
+    width:90%;
+    max-width:700px;
+    margin:40px auto;
+}
+
+.gallery-form{
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.gallery-form h2{
+    margin-bottom:25px;
+}
+
+.gallery-form label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+.gallery-form input,
+.gallery-form select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+button{
+    margin-top:25px;
+    width:100%;
+    padding:14px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<form
+class="gallery-form"
+action="/upload-gallery"
+method="POST"
+enctype="multipart/form-data">
+
+<h2>Upload Gallery Images</h2>
+
+<label>Select Project</label>
+
+<select
+name="project_id"
+id="projectSelect"
+required>
+
+<option value="">Loading...</option>
+
+</select>
+
+<label>Select Images</label>
+
+<input
+type="file"
+name="gallery"
+multiple
+accept="image/*"
+required>
+
+<button>
+
+Upload Images
+
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+async function loadProjects(){
+
+const response = await fetch('/api/projects');
+
+const projects = await response.json();
+
+const select = document.getElementById('projectSelect');
+
+select.innerHTML='<option value="">Select Project</option>';
+
+projects.forEach(project=>{
+
+select.innerHTML+=`
+
+<option value="${project.id}">
+
+${project.title}
+
+</option>
+
+`;
+
+});
+
+}
+
+loadProjects();
+
+</script>
+
+</body>
+</html>

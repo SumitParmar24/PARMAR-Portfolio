@@ -322,7 +322,7 @@ async function loadProjects() {
             container.innerHTML += `
                 <div class="project-card">
 
-                    <img src="/uploads/projects/${project.image}" alt="${project.title}">
+                    <img src="${project.image}" alt="${project.title}">
 
                     <div class="project-content">
 
@@ -423,9 +423,9 @@ async function loadReports(){
                     <h3>${report.title}</h3>
                     <p>${report.description}</p>
 
-                    <a href="/uploads/reports/${report.file}"
-                       target="_blank">
-                       View Report
+                    <a href="${report.file}"
+                    target="_blank">
+                    View Report
                     </a>
                 </div>
             `;

@@ -17,7 +17,8 @@ body{
 }
 
 .container{
-    max-width:1000px;
+    max-width:1400px;
+    width:95%;
     margin:auto;
 }
 
@@ -30,9 +31,10 @@ body{
 
 .main-image{
     width:100%;
-    max-height:400px;
-    object-fit:cover;
+    height:auto;
+    display:block;
     border-radius:15px;
+    object-fit:contain;
 }
 
 h1{
@@ -55,14 +57,7 @@ h1{
 }
 
 
-.gallery img{
 
-    width:100%;
-    height:200px;
-    object-fit:cover;
-    border-radius:15px;
-
-}
 
 .gallery-card{
     background:#fff;
@@ -73,9 +68,13 @@ h1{
 
 .gallery-card img{
     width:100%;
-    height:220px;
-    object-fit:cover;
+    height:300px;
+    object-fit:contain;
+    background:#111;
+    display:block;
 }
+
+
 
 .gallery-content{
     padding:15px;
@@ -89,6 +88,45 @@ h1{
     color:#64748b;
     font-size:14px;
 }
+
+.gallery-card{
+    transition:.3s;
+    cursor:pointer;
+}
+
+.gallery-card a{
+    display:block;
+}
+
+.gallery-card img{
+    width:100%;
+    height:230px;
+    object-fit:contain;
+    background:#111;
+    display:block;
+    cursor:pointer;
+}
+
+.gallery-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+.main-image{
+    width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+    object-fit:contain !important;
+}
+
+.gallery-card img{
+    width:100% !important;
+    height:auto !important;
+    max-height:none !important;
+    object-fit:contain !important;
+}
+
+
 
 
 </style>
@@ -159,6 +197,11 @@ const project = await res.json();
 
 document.getElementById("projectImage").src = project.image;
 
+const mainImg = document.getElementById("projectImage");
+mainImg.src = project.image;
+mainImg.onclick = () => window.open(project.image, "_blank");
+mainImg.style.cursor = "pointer";
+
 document.getElementById("title").innerText = project.title;
 
 document.getElementById("technology").innerText = project.technology;
@@ -172,39 +215,37 @@ document.getElementById("description").innerText = project.description;
 
 async function loadGallery(){
 
+    const res = await fetch(`/api/project-images/${projectId}`);
+    const images = await res.json();
 
-const res = await fetch(`/api/project-images/${projectId}`);
+    const gallery = document.getElementById("gallery");
 
-const images = await res.json();
+    gallery.innerHTML = "";
 
+    if(images.length === 0){
+        gallery.innerHTML = "<p>No gallery images found.</p>";
+        return;
+    }
 
-const gallery = document.getElementById("gallery");
+    images.forEach(img=>{
 
+        gallery.innerHTML += `
+        <div class="gallery-card">
 
-images.forEach(img=>{
+            <img src="${img.image}"
+            alt="${img.title}"
+            onclick="window.open('${img.image}','_blank')"
+            style="width:100%; height:230px; object-fit:contain; background:#111; cursor:pointer;">
 
+            <div class="gallery-content">
+                <h3>${img.title}</h3>
+                <p>${img.description}</p>
+            </div>
 
-gallery.innerHTML += `
+        </div>
+        `;
 
-<div class="gallery-card">
-
-    <img src="${img.image}">
-
-    <div class="gallery-content">
-
-        <h3>${img.title || 'Project Image'}</h3>
-
-        <p>${img.description || ''}</p>
-
-    </div>
-
-</div>
-
-`;
-
-
-});
-
+    });
 
 }
 

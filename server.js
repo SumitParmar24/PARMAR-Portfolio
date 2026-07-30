@@ -491,6 +491,93 @@ app.post('/add-project', isAuthenticated, uploadProjectCloud.single('image'), (r
 
 });
 
+// Add Service
+app.post('/add-service', isAuthenticated, (req, res) => {
+
+    const { title, icon, description } = req.body;
+
+    const sql = `
+        INSERT INTO services (title, icon, description)
+        VALUES (?, ?, ?)
+    `;
+
+    db.query(sql, [title, icon, description], (err, result) => {
+
+        if(err){
+            console.log(err);
+            return res.send(err.message);
+        }
+
+        res.send(`
+            <h2 style="color:green;text-align:center;margin-top:50px;">
+                Service Added Successfully
+            </h2>
+
+            <div style="text-align:center;margin-top:20px;">
+                <a href="/dashboard.html">Back to Dashboard</a>
+            </div>
+        `);
+
+    });
+
+});
+
+// Update Service
+app.post('/update-service', isAuthenticated, (req, res) => {
+
+    const { id, title, icon, description } = req.body;
+
+    const sql = `
+        UPDATE services
+        SET
+            title = ?,
+            icon = ?,
+            description = ?
+        WHERE id = ?
+    `;
+
+    db.query(
+        sql,
+        [title, icon, description, id],
+        (err, result) => {
+
+            if (err) {
+                console.log(err);
+                return res.send(err.message);
+            }
+
+            console.log("✅ Service Updated");
+
+            res.redirect('/add-service.html');
+
+        }
+    );
+
+});
+
+
+// Delete Service
+app.get('/delete-service/:id', isAuthenticated, (req, res) => {
+
+    const id = req.params.id;
+
+    db.query(
+        "DELETE FROM services WHERE id = ?",
+        [id],
+        (err, result) => {
+
+            if(err){
+                console.log(err);
+                return res.send(err.message);
+            }
+
+            res.redirect('/add-service.html');
+
+        }
+    );
+
+});
+
 // Upload Project Gallery Image
 app.post(
     '/upload-project-gallery',
@@ -542,6 +629,28 @@ app.get('/api/projects', (req, res) => {
 
         if (err) {
             return res.status(500).json({ error: 'Database Error' });
+        }
+
+        res.json(results);
+
+    });
+
+});
+
+// Get All Services
+app.get('/api/services', (req, res) => {
+
+    const sql = `
+        SELECT *
+        FROM services
+        ORDER BY created_at DESC
+    `;
+
+    db.query(sql, (err, results) => {
+
+        if(err){
+            console.log(err);
+            return res.status(500).json([]);
         }
 
         res.json(results);

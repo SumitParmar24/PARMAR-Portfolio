@@ -142,24 +142,11 @@ PARMAR
         I provide professional services in Data Analytics and Web Development.
     </p>
 
-    <div class="service-container">
+    <div class="service-container" id="servicesContainer">
 
-        <div class="service-card">
-            <h3>📊 Data Analytics</h3>
-            <p>Excel, SQL, Power BI dashboards and data analysis.</p>
-        </div>
+    <p>Loading services...</p>
 
-        <div class="service-card">
-            <h3>💻 Website Development</h3>
-            <p>Modern, responsive and professional portfolio websites.</p>
-        </div>
-
-        <div class="service-card">
-            <h3>🗄 SQL Database</h3>
-            <p>Database design, queries, joins and optimization.</p>
-        </div>
-
-    </div>
+</div>
 
 </section>
 
@@ -336,7 +323,7 @@ async function loadProjects() {
 
                         <div class="project-buttons">
                             <a href="/project-details.html?id=${project.id}">View Project</a>
-                            <a href="${project.github}" target="_blank">GitHub</a>
+                            
                         </div>
 
                     </div>
@@ -550,6 +537,49 @@ async function loadCertificates() {
 }
 
 loadCertificates();
+
+async function loadServices(){
+
+    const container = document.getElementById("servicesContainer");
+
+    try{
+
+        const response = await fetch("/api/services");
+        const services = await response.json();
+
+        container.innerHTML = "";
+
+        if(services.length === 0){
+            container.innerHTML = "<p>No services found.</p>";
+            return;
+        }
+
+        services.forEach(service=>{
+
+            container.innerHTML += `
+                <div class="service-card">
+
+                    <h3>${service.icon} ${service.title}</h3>
+
+                    <p>${service.description}</p>
+
+                </div>
+            `;
+
+        });
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        container.innerHTML = "<p>Error loading services.</p>";
+
+    }
+
+}
+
+loadServices();
 
 </script>
 

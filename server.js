@@ -757,6 +757,19 @@ app.post('/change-password', isAuthenticated, (req, res) => {
 
 });
 
+// Upload Profile Photo
+app.post('/upload-profile', isAuthenticated, uploadProfile.single('profile'), (req, res) => {
+
+    if (!req.file) {
+        return res.send("No file uploaded");
+    }
+
+    console.log("✅ Profile Photo Updated");
+
+    res.redirect('/dashboard');
+
+});
+
 
 // Logout
 app.get('/logout', (req, res) => {
